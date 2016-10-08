@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+  form#formTest(name="test",method="post",action="/process_post")
+    table
+        tr
+            td CensusDate
+            td 
+                input#txtCensusDate(type='text', name='txtCensusDate')
+        tr
+            td ProjectType
+            td
+                select(name='dllProjectType')
+                    option(value='stochastic') Stochastic
+                    option(value='deterministic') Deterministic
+        tr
+            td
+                input.inputSubmit(type='submit', value='Run')

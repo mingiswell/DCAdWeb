@@ -1,0 +1,882 @@
+html
+    head
+        style(type='text/css').
+            body {
+            background-color: white;
+            font-family: "Calibri", Georgia, Serif;
+            font-weight: bold;
+            }
+            div.paraTitle {
+            width: 1300px;
+            background-color: #8470FF;
+            color: white;
+            text-align: center;
+            font-size: 30px
+            }
+            div.splitDiv {
+            width: 1300px;
+            background-color: lightgray;
+            height: 7px;
+            padding-bottom: 0px;
+            padding-top: 0px
+            }
+            select,
+            input,
+            td.spanTd {
+            width: 120px;
+            }
+            input.inputFile {
+            width: 100%
+            }
+            table {
+            width: 100%;
+            background-color: black;
+            color: white;
+            }
+            table.sectionTable {
+            width: 1300px;
+            }
+            table.tableTestCases {
+            text-align: center;
+            }
+            td {
+            padding-bottom: 10px;
+            padding-top: 10px
+            }
+            td.multiLineTd {
+            vertical-align: top
+            }
+            td.firstTd {
+            padding-left: 30px;
+            width: 25%;
+            }
+            td.subTd {
+            padding-left: 50px;
+            width: 25%;
+            }
+            td.innerTd {
+            padding-bottom: 0px;
+            padding-top: 0px
+            }
+            td {
+            width: 120px;
+            }
+            input.inputSubmit {
+            width: 160px;
+            height: 80px
+            }
+            span.subSpan {
+            padding-left: 20px
+            }
+            #divTestCases,
+            #tdSubsetofParticipants1,
+            #tdSubsetofParticipants2,
+            #tdSubsetofParticipants3,
+            #lblTesttrialnumber,
+            #tdTesttrialnumber {
+            visibility: hidden
+            }
+        script(type='text/javascript').
+            function load() {
+            switchPayIncreaseType();
+            }
+            function switchPopbulationtobeRun() {
+            switch (document.getElementById('dllPopulationtobeRun').value) {
+            case "Subset of Participants":
+            document.getElementById('tdSubsetofParticipants1').style.visibility = "visible";
+            document.getElementById('tdSubsetofParticipants2').style.visibility = "visible";
+            document.getElementById('tdSubsetofParticipants3').style.visibility = "visible";
+            document.getElementById('divTestCases').style.visibility = "hidden";
+            break;
+            case "Test Cases":
+            document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
+            document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
+            document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
+            document.getElementById('divTestCases').style.visibility = "visible";
+            break;
+            default:
+            document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
+            document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
+            document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
+            document.getElementById('divTestCases').style.visibility = "hidden";
+            }
+            }
+            function switchTrialtobeRun() {
+            var TrialValue = document.getElementById('dllTrialtobeRun').value;
+            if (TrialValue == "Test Trial") {
+            document.getElementById('lblTesttrialnumber').style.visibility = "visible";
+            document.getElementById('tdTesttrialnumber').style.visibility = "visible";
+            } else {
+            document.getElementById('lblTesttrialnumber').style.visibility = "hidden";
+            document.getElementById('tdTesttrialnumber').style.visibility = "hidden";
+            }
+            }
+            function switchPayIncreaseType() {
+            switch (document.getElementById('dllPayIncreaseType').value) {
+            case "Fixed Increase":
+            document.getElementById('txtPayGroup1FixedIncrease').value = "2.0%";
+            document.getElementById('txtPayGroup2FixedIncrease').value = "2.0%";
+            document.getElementById('txtPayGroup3FixedIncrease').value = "3.0%";
+            document.getElementById('dllPayGroup1Agerelatedtable').value = "";
+            document.getElementById('dllPayGroup2Agerelatedtable').value = "";
+            document.getElementById('dllPayGroup3Agerelatedtable').value = "";
+            document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
+            document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
+            document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
+            break;
+            case "Age related table":
+            document.getElementById('txtPayGroup1FixedIncrease').value = "";
+            document.getElementById('txtPayGroup2FixedIncrease').value = "";
+            document.getElementById('txtPayGroup3FixedIncrease').value = "";
+            document.getElementById('dllPayGroup1Agerelatedtable').value = "Table 2";
+            document.getElementById('dllPayGroup2Agerelatedtable').value = "Table 1";
+            document.getElementById('dllPayGroup3Agerelatedtable').value = "Table 2";
+            document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
+            document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
+            document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
+            break;
+            case "Service related table":
+            document.getElementById('txtPayGroup1FixedIncrease').value = "";
+            document.getElementById('txtPayGroup2FixedIncrease').value = "";
+            document.getElementById('txtPayGroup3FixedIncrease').value = "";
+            document.getElementById('dllPayGroup1Agerelatedtable').value = "";
+            document.getElementById('dllPayGroup2Agerelatedtable').value = "";
+            document.getElementById('dllPayGroup3Agerelatedtable').value = "";
+            document.getElementById('dllPayGroup1Servicerelatedtable').value = "Table 6";
+            document.getElementById('dllPayGroup2Servicerelatedtable').value = "Table 7";
+            document.getElementById('dllPayGroup3Servicerelatedtable').value = "Table 7";
+            break;
+            default:
+            }
+            }
+            function switchAutoescalation() {}
+            function switchclassormix(SingleClassorMixId, ClassId) {}
+            function switchRebalanceattheendofeachyear() {}
+            function switchUseCurrentMixforfuturecontributions() {}
+    body(onload='load();')
+        #divParameter.Parameters
+            form#formParameter(name="paramter",method="post",action="/process_post")
+                .paraTitle Total Retirement Simulator
+                // Census Date and Project Type
+                table.sectionTable
+                    tr
+                        td.firstTd Census Date
+                        td
+                            input#txtCensusDate(type='text', name='txtCensusDate')
+                        td Project Type
+                        td
+                            select(name='dllProjectType')
+                                option(value='stochastic') Stochastic
+                                option(value='deterministic') Deterministic
+                .splitDiv
+                // Employee Data
+                table.sectionTable
+                    tr
+                        td.firstTd(style='vertical-align:bottom') Employee Data
+                        td(colspan='3')
+                            | File Name
+                            br
+                            input.inputFile(type='file', name='fileEmployeeData')
+                    tr
+                        td.firstTd Import DB Results?
+                        td
+                            select(name='dllImportDBResults')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                        td  
+                        td  
+                    tr
+                        td.firstTd DB Results
+                        td(colspan='3')
+                            input.inputFile(type='file', name='fileDBResults')
+                    tr
+                        td.firstTd Output File
+                        td(colspan='3')
+                            input.inputFile(type='file', name='fileOutputFile')
+                    tr
+                        td.multiLineTd.firstTd Notes:
+                        td(colspan='3')
+                            textarea(rows='4', cols='80', name='txtNotes')
+                .splitDiv
+                // Population to be Run
+                table.sectionTable
+                    tr
+                        td.multiLineTd.firstTd Population to be Run
+                        td.multiLineTd
+                            select#dllPopulationtobeRun(name='dllPopulationtobeRun', onchange='switchPopbulationtobeRun()')
+                                option(value='All Participants') All Participants
+                                option(value='Subset of Participants') Subset of Participants
+                                option(value='Test Cases') Test Cases
+                        td.multiLineTd(rowspan='8')
+                            #divTestCases.divTestCases
+                                table.tableTestCases(name='tableTestCases')
+                                    tr
+                                        td.innerTd Test Cases
+                                        td.innerTd EEID
+                                    tr
+                                        td.innerTd 1
+                                        td.innerTd
+                                            input#txttableTestCases1(type='text', name='txttableTestCases1')
+                                    tr
+                                        td.innerTd 2
+                                        td.innerTd
+                                            input#txttableTestCases2(type='text', name='txttableTestCases2')
+                                    tr
+                                        td.innerTd 3
+                                        td.innerTd
+                                            input#txttableTestCases3(type='text', name='txttableTestCases3')
+                                    tr
+                                        td.innerTd 4
+                                        td.innerTd
+                                            input#txttableTestCases4(type='text', name='txttableTestCases4')
+                                    tr
+                                        td.innerTd 5
+                                        td.innerTd
+                                            input#txttableTestCases5(type='text', name='txttableTestCases5')
+                                    tr
+                                        td.innerTd 6
+                                        td.innerTd
+                                            input#txttableTestCases6(type='text', name='txttableTestCases6')
+                                    tr
+                                        td.innerTd 7
+                                        td.innerTd
+                                            input#txttableTestCases7(type='text', name='txttableTestCases7')
+                                    tr
+                                        td.innerTd 8
+                                        td.innerTd
+                                            input#txttableTestCases8(type='text', name='txttableTestCases8')
+                                    tr
+                                        td.innerTd 9
+                                        td.innerTd
+                                            input#txttableTestCases9(type='text', name='txttableTestCases9')
+                                    tr
+                                        td.innerTd 10
+                                        td.innerTd
+                                            input#txttableTestCases10(type='text', name='txttableTestCases10')
+                                    tr
+                                        td.innerTd
+                                        td.innerTd
+                                            input#txttableTestCases11(type='text', name='txttableTestCases11')
+                        td.multiLineTd(rowspan='8')
+                            br
+                            br
+                            input.inputSubmit(type='submit', value='Run')
+                    tr
+                        td#tdSubsetofParticipants1.innerTd.firstTd
+                            | Subset of Participants
+                        td.innerTd
+                    tr
+                        td#tdSubsetofParticipants2.innerTd.subTd
+                            | No of Participants
+                            br
+                            |  Start with Row
+                        td#tdSubsetofParticipants3.innerTd
+                            input#txtNoofParticipants(type='text', name='txtNoofParticipants')
+                            br
+                            input#txtStartwithRow(type='text', name='txtStartwithRow')
+                    tr
+                        td.firstTd.firstTd Trial to be Run
+                        td
+                            select#dllTrialtobeRun(name='dllTrialtobeRun', onchange='switchTrialtobeRun()')
+                                option(value='All') All
+                                option(value='Test Trial') Test Trial
+                    tr
+                        td#lblTesttrialnumber.subTd Test trial number
+                        td#tdTesttrialnumber
+                            input#txtTesttrialnumber(type='text', name='txtTesttrialnumber')
+                    tr
+                        td.innerTd.firstTd
+                            | Start Age
+                            br
+                            |  End Age
+                        td.innerTd
+                            input#txtStartAge(type='text', name='txtStartAge')
+                            br
+                            input#txtEndAge(type='text', name='txtEndAge')
+                .splitDiv
+                // Pay Related Assumptions
+                table.sectionTable
+                    tr
+                        td.firstTd Pay Related Assumptions
+                        td.spanTd
+                        td.spanTd
+                        td.spanTd
+                        td.subTd
+                        td.spanTd
+                        td.spanTd
+                    tr
+                        td.subTd Pay Increase Type
+                        td
+                            select#dllPayIncreaseType(name='dllPayIncreaseType', onchange='switchPayIncreaseType()')
+                                option(value='Fixed Increase') Fixed Increase
+                                option(value='Age related table', selected='') Age related table
+                                option(value='Service related table') Service related table
+                    tr
+                        td.subTd
+                            br
+                            |  Fixed Increase
+                            br
+                            |  Age related table
+                            br
+                            |  Service related table
+                            br
+                            br
+                            |  Bonus as a % of Target
+                        td
+                            | Pay Group 1
+                            br
+                            input#txtPayGroup1FixedIncrease(type='text', name='txtPayGroup1FixedIncrease')
+                            br
+                            select#dllPayGroup1Agerelatedtable(name='dllPayGroup1Agerelatedtable')
+                                option(disabled='', selected='', value='')
+                                option(value='Table 1') Table 1
+                                option(value='Table 2') Table 2
+                                option(value='Table 3') Table 3
+                                option(value='Table 4') Table 4
+                                option(value='Table 5') Table 5
+                            br
+                            select#dllPayGroup1Servicerelatedtable(name='dllPayGroup1Servicerelatedtable')
+                                option(disabled='', selected='', value='')
+                                option(value='Table 6') Table 6
+                                option(value='Table 7') Table 7
+                                option(value='Table 8') Table 8
+                                option(value='Table 9') Table 9
+                                option(value='Table 10') Table 10
+                            br
+                            br
+                            input#txtPayGroup1BonusasaPecentofTarget(type='text', name='txtPayGroup1BonusasaPecentofTarget')
+                        td
+                            | Pay Group 2
+                            br
+                            input#txtPayGroup2FixedIncrease(type='text', name='txtPayGroup2FixedIncrease')
+                            br
+                            select#dllPayGroup2Agerelatedtable(name='dllPayGroup2Agerelatedtable')
+                                option(disabled='', selected='', value='')
+                                option(value='Table 1') Table 1
+                                option(value='Table 2') Table 2
+                                option(value='Table 3') Table 3
+                                option(value='Table 4') Table 4
+                                option(value='Table 5') Table 5
+                            br
+                            select#dllPayGroup2Servicerelatedtable(name='dllPayGroup2Servicerelatedtable')
+                                option(disabled='', selected='', value='')
+                                option(value='Table 6') Table 6
+                                option(value='Table 7') Table 7
+                                option(value='Table 8') Table 8
+                                option(value='Table 9') Table 9
+                                option(value='Table 10') Table 10
+                            br
+                            br
+                            input#txtPayGroup2BonusasaPecentofTarget(type='text', name='txtPayGroup2BonusasaPecentofTarget')
+                        td
+                            | Pay Group 3
+                            br
+                            input#txtPayGroup3FixedIncrease(type='text', name='txtPayGroup3FixedIncrease')
+                            br
+                            select#dllPayGroup3Agerelatedtable(name='dllPayGroup3Agerelatedtable')
+                                option(disabled='', selected='', value='')
+                                option(value='Table 1') Table 1
+                                option(value='Table 2') Table 2
+                                option(value='Table 3') Table 3
+                                option(value='Table 4') Table 4
+                                option(value='Table 5') Table 5
+                            br
+                            select#dllPayGroup3Servicerelatedtable(name='dllPayGroup3Servicerelatedtable')
+                                option(disabled='', selected='', value='')
+                                option(value='Table 6') Table 6
+                                option(value='Table 7') Table 7
+                                option(value='Table 8') Table 8
+                                option(value='Table 9') Table 9
+                                option(value='Table 10') Table 10
+                            br
+                            br
+                            input#txtPayGroup3BonusasaPecentofTarget(type='text', name='txtPayGroup3BonusasaPecentofTarget')
+                        td.subTd
+                            br
+                            |  Adjusted for Inflation
+                            br
+                            |  Baseline inflation for adj
+                            br
+                            |  Minimum Increase
+                            br
+                            br
+                            br
+                        td
+                            | All Pay Groups
+                            br
+                            select(name='dllAdjustedforInflation')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                            br
+                            input#txtBaselineinflationforadj(type='text', name='txtBaselineinflationforadj')
+                            br
+                            input#txtMinimumIncrease(type='text', name='txtMinimumIncrease')
+                            br
+                            br
+                            br
+                .splitDiv
+                // Assumed Tax rate
+                table.sectionTable
+                    tr
+                        td.firstTd Assumed Tax rate
+                        td
+                            | Pre-Retirement
+                            br
+                            input#txtPreRetirement(type='text', name='txtPreRetirement')
+                        td.spanTd
+                        td
+                            | Post Retirement
+                            br
+                            input#txtPostRetirement(type='text', name='txtPostRetirement')
+                        td.subTd
+                        td.spanTd
+                        td.spanTd
+                .splitDiv
+                // Prorate Target for Short Svc?
+                table.sectionTable
+                    tr
+                        td.firstTd Prorate Target for Short Svc?
+                        td.spanTd
+                        td
+                            select(name='dllProrateTargetforShortSvc')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                        td.spanTd
+                        td.subTd
+                        td.spanTd
+                    tr
+                        td.subTd(colspan='2')
+                            | No. of Years for Full Target
+                            br
+                            |  Starting age for prorate period
+                        td
+                            input#txtNoofYearsforFullTarget(type='text', name='txtNoofYearsforFullTarget')
+                            br
+                            input#txtStartingageforprorateperiod(type='text', name='txtStartingageforprorateperiod')
+                    tr
+                        td.firstTd(colspan='2') Custom Percentile to include in output
+                        td
+                            input#txtCustomPercentiletoincludeinoutput(type='text', name='txtCustomPercentiletoincludeinoutput')
+                    tr
+                        td.subTd(colspan='2')
+                            | Stop Age for post-retirement benefits
+                            br
+                            |  Interest rate to calculate PV
+                        td
+                            input#txtStopAgeforpostretirementbenefits(type='text', name='txtStopAgeforpostretirementbenefits')
+                            br
+                            input#txtInterestratetocalculatePV(type='text', name='txtInterestratetocalculatePV')
+                .splitDiv
+                // Profit Sharing percentage
+                table.sectionTable
+                    tr
+                        td.firstTd Profit Sharing percentage
+                        td.spanTd
+                        td
+                            input#txtProfitSharingpercentage(type='text', name='txtProfitSharingpercentage')
+                        td.spanTd
+                        td.subTd
+                        td.spanTd
+                    tr
+                        td.firstTd(colspan='2') Include Bonus in Profit Sharing pay?
+                        td
+                            select(name='dllIncludeBonusinProfitSharingpay')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                    tr
+                        td.firstTd(colspan='2') Minimum service for PS eligibility
+                        td
+                            input#txtMinimumserviceforPSeligibility(type='text', name='txtMinimumserviceforPSeligibility')
+                    tr
+                        td.firstTd(colspan='2') Portion of year interest for annual contribution
+                        td
+                            input#txtPortionofyearinterestforannualcontribution(type='text', name='txtPortionofyearinterestforannualcontribution')
+                .splitDiv
+                // Include Bonus in 401(k) pay?
+                table.sectionTable
+                    tr
+                        td.firstTd Include Bonus in 401(k) pay?
+                        td.spanTd
+                        td
+                            select(name='dllIncludeBonusin401pay')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                        td.spanTd
+                        td.subTd
+                        td.spanTd
+                    tr
+                        td.firstTd(colspan='2')
+                            | 401(k) Pre-tax Employee Contribution
+                    tr
+                        td.subTd(colspan='2')
+                            | Minimum deferral rate
+                            br
+                            |  Maximum deferral rate
+                            br
+                            |  Allow Catch-up contributions
+                        td
+                            input#txtMinimumdeferralrate(type='text', name='txtMinimumdeferralrate')
+                            br
+                            input#txtMaximumdeferralrate(type='text', name='txtMaximumdeferralrate')
+                            br
+                            select(name='dllAllowCatchupcontributions')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                    tr
+                        td.subTd(colspan='2')
+                            | Auto-escalation?
+                            br
+                            span.subSpan
+                                | Annual Increase
+                                br
+                                span.subSpan
+                                    | Maximum Auto-escalation
+                        td
+                            select#dllAutoescalation(name='dllAutoescalation', onchange='switchAutoescalation()')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                            br
+                            input#txtAnnualIncrease(type='text', name='txtAnnualIncrease')
+                            br
+                            input#txtMaximumAutoescalation(type='text', name='txtMaximumAutoescalation')
+                    tr
+                        td.firstTd(colspan='2')
+                            | 401(k) Employer Match Contribution
+                    tr
+                        td.subTd(colspan='2')
+                            | Rate table for first x%
+                            br
+                            span.subSpan
+                                | Percentage of pay for which this table applies
+                                br
+                                |  Rate table for next y%
+                                br
+                                span.subSpan
+                                    | Percentage of additional pay for which this table applies
+                        td
+                            select#dllRatetableforfirstx(name='dllRatetableforfirstx')
+                                option(value='Match Table 1') Match Table 1
+                                option(value='Match Table 2') Match Table 2
+                                option(value='Match Table 3') Match Table 3
+                                option(value='Match Table 4') Match Table 4
+                            br
+                            input#txtPercentageofpay(type='text', name='txtPercentageofpay')
+                            br
+                            select#dllRatetablefornexty(name='dllRatetablefornexty')
+                                option(value='Match Table 1') Match Table 1
+                                option(value='Match Table 2') Match Table 2
+                                option(value='Match Table 3') Match Table 3
+                                option(value='Match Table 4') Match Table 4
+                            br
+                            input#txtPercentageofadditionalpay(type='text', name='txtPercentageofadditionalpay')
+                    tr
+                        td.subTd(colspan='2')
+                            span.subSpan
+                                | Include After-tax contributions for match?
+                        td
+                            select#dllIncludeAftertaxcontributions(name='dllIncludeAftertaxcontributions')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                    tr
+                        td.subTd(colspan='2')
+                            span.subSpan
+                                | Max overall match as a percentage of pay
+                                br
+                                span.subSpan
+                                    | Maximum dollar match
+                                    br
+                                    span.subSpan
+                                        | Adjust maximum dollar match for inflation?
+                        td
+                            input#txtMaxoverallmatchasapercentageofpay(type='text', name='txtMaxoverallmatchasapercentageofpay')
+                            br
+                            input#txtMaximumdollarmatch(type='text', name='txtMaximumdollarmatch')
+                            br
+                            select#dllAdjustmaximumdollarmatchforinflation(name='dllAdjustmaximumdollarmatchforinflation')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                .splitDiv
+                // Adjust for medical expenses?
+                table.sectionTable
+                    tr
+                        td.firstTd Adjust for medical expenses?
+                        td.spanTd
+                        td
+                            select(name='dllAdjustformedicalexpenses')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                        td.spanTd
+                        td.subTd
+                        td.spanTd
+                    tr
+                        td.firstTd(colspan='2')
+                            | Pre-retirement medical expenses
+                            br
+                            |  Post-retirement medical expenses
+                            br
+                            span.subSpan
+                                | Pre-65
+                                br
+                                span.subSpan
+                                    | Post-65
+                        td
+                            input#txtPreretirementmedicalexpenses(type='text', name='txtPreretirementmedicalexpenses')
+                            br
+                            br
+                            input#txtPostretirementmedicalexpensesPre65(type='text', name='txtPostretirementmedicalexpensesPre65')
+                            br
+                            input#txtPostretirementmedicalexpensesPost65(type='text', name='txtPostretirementmedicalexpensesPost65')
+                .splitDiv
+                // Social Security PIA
+                table.sectionTable
+                    tr
+                        td.firstTd
+                            | Social Security PIA
+                            br
+                            span.subSpan
+                                | Social Security COLA Assumption
+                                br
+                                span.subSpan
+                                    | Wage Base Increase Assumption
+                        td.spanTd
+                        td
+                            br
+                            input#txtSocialSecurityCOLAAssumption(type='text', name='txtSocialSecurityCOLAAssumption')
+                            br
+                            input#txtWageBaseIncreaseAssumption(type='text', name='txtWageBaseIncreaseAssumption')
+                        td.spanTd
+                        td.subTd
+                        td.spanTd
+                    tr
+                        td.subTd(colspan='2')
+                            | Social Security PIA Commencement Age
+                        td
+                            input#txtSocialSecurityPIACommencementAge(type='text', name='txtSocialSecurityPIACommencementAge')
+                    tr
+                        td.subTd(colspan='2')
+                            | Historical Pay Scale (for pay before history begins)
+                        td
+                            input#txtHistoricalPayScale(type='text', name='txtHistoricalPayScale')
+                .splitDiv
+                // Fund (from Individual Data tab)
+                table.sectionTable
+                    tr
+                        td.firstTd
+                            | Fund (from Individual Data tab)
+                            br
+                            |  AGGRESSIVE FUNDTPQA
+                            br
+                            |  AGGRESSIVE GROWTH EQTCAG
+                            br
+                            |  BOND INDEXTPQB
+                            br
+                            |  BROKERAGELINKBLNK
+                            br
+                            |  CAPITAL PRESERVATIONGCTI
+                            br
+                            |  CONSERVATIVE FUNDTPQC
+                            br
+                            |  DFA EMRG MKT CORE EQOEFQ
+                            br
+                            |  DIVERSIFIED BONDTPQD
+                            br
+                            |  GROWTH FUNDTPQE
+                            br
+                            |  INTERNATIONAL INDEXTPQG
+                        td
+                            | Single class or mix?
+                            br
+                            select#dllAGGRESSIVEFUNDTPQASingleclassormix(name='dllAGGRESSIVEFUNDTPQASingleclassormix', onchange='switchclassormix(dllAGGRESSIVEFUNDTPQASingleclassormix,dllAGGRESSIVEFUNDTPQASingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllAGGRESSIVEGROWTHEQTCAGSingleclassormix(name='dllAGGRESSIVEGROWTHEQTCAGSingleclassormix', onchange='switchclassormix(dllAGGRESSIVEGROWTHEQTCAGSingleclassormix,dllAGGRESSIVEGROWTHEQTCAGSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllBONDINDEXTPQBSingleclassormix(name='dllBONDINDEXTPQBSingleclassormix', onchange='switchclassormix(dllBONDINDEXTPQBSingleclassormix,dllBONDINDEXTPQBSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllBROKERAGELINKBLNKSingleclassormix(name='dllBROKERAGELINKBLNKSingleclassormix', onchange='switchclassormix(dllBROKERAGELINKBLNKSingleclassormix,dllBROKERAGELINKBLNKSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllCAPITALPRESERVATIONGCTISingleclassormix(name='dllCAPITALPRESERVATIONGCTISingleclassormix', onchange='switchclassormix(dllCAPITALPRESERVATIONGCTISingleclassormix,dllCAPITALPRESERVATIONGCTISingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllCONSERVATIVEFUNDTPQCSingleclassormix(name='dllCONSERVATIVEFUNDTPQCSingleclassormix', onchange='switchclassormix(dllCONSERVATIVEFUNDTPQCSingleclassormix,dllCONSERVATIVEFUNDTPQCSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllDFAEMRGMKTCOREEQOEFQSingleclassormix(name='dllDFAEMRGMKTCOREEQOEFQSingleclassormix', onchange='switchclassormix(dllDFAEMRGMKTCOREEQOEFQSingleclassormix,dllDFAEMRGMKTCOREEQOEFQSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllDIVERSIFIEDBONDTPQDSingleclassormix(name='dllDIVERSIFIEDBONDTPQDSingleclassormix', onchange='switchclassormix(dllDIVERSIFIEDBONDTPQDSingleclassormix,dllDIVERSIFIEDBONDTPQDSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllGROWTHFUNDTPQESingleclassormix(name='dllGROWTHFUNDTPQESingleclassormix', onchange='switchclassormix(dllGROWTHFUNDTPQESingleclassormix,dllGROWTHFUNDTPQESingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                            br
+                            select#dllINTERNATIONALINDEXTPQGSingleclassormix(name='dllINTERNATIONALINDEXTPQGSingleclassormix', onchange='switchclassormix(dllINTERNATIONALINDEXTPQGSingleclassormix,dllINTERNATIONALINDEXTPQGSingleclass)')
+                                option(value='0') -
+                                option(value='1') 1
+                        td
+                            | Class
+                            br
+                            select#dllAGGRESSIVEFUNDTPQASingleclass(name='dllAGGRESSIVEFUNDTPQASingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllAGGRESSIVEGROWTHEQTCAGSingleclass(name='dllAGGRESSIVEGROWTHEQTCAGSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllBONDINDEXTPQBSingleclass(name='dllBONDINDEXTPQBSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllBROKERAGELINKBLNKSingleclass(name='dllBROKERAGELINKBLNKSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllCAPITALPRESERVATIONGCTISingleclass(name='dllCAPITALPRESERVATIONGCTISingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllCONSERVATIVEFUNDTPQCSingleclass(name='dllCONSERVATIVEFUNDTPQCSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllDFAEMRGMKTCOREEQOEFQSingleclass(name='dllDFAEMRGMKTCOREEQOEFQSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllDIVERSIFIEDBONDTPQDSingleclass(name='dllDIVERSIFIEDBONDTPQDSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllGROWTHFUNDTPQESingleclass(name='dllGROWTHFUNDTPQESingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                            br
+                            select#dllINTERNATIONALINDEXTPQGSingleclass(name='dllINTERNATIONALINDEXTPQGSingleclass')
+                                option(value='Conservative-35') Conservative-35
+                                option(value='Conservative-55') Conservative-55
+                                option(value='Conservative-65') Conservative-65
+                                option(value='Moderate-35') Moderate-35
+                        td
+                            br
+                            input#txtAGGRESSIVEFUNDTPQASingleclassormix(type='text', name='txtAGGRESSIVEFUNDTPQASingleclassormix')
+                            br
+                            input#txtAGGRESSIVEGROWTHEQTCAGSingleclassormix(type='text', name='txtAGGRESSIVEGROWTHEQTCAGSingleclassormix')
+                            br
+                            input#txtBONDINDEXTPQBSingleclassormix(type='text', name='txtBONDINDEXTPQBSingleclassormix')
+                            br
+                            input#txtBROKERAGELINKBLNKSingleclassormix(type='text', name='txtBROKERAGELINKBLNKSingleclassormix')
+                            br
+                            input#txtCAPITALPRESERVATIONGCTISingleclassormix(type='text', name='txtCAPITALPRESERVATIONGCTISingleclassormix')
+                            br
+                            input#txtCONSERVATIVEFUNDTPQCSingleclassormix(type='text', name='txtCONSERVATIVEFUNDTPQCSingleclassormix')
+                            br
+                            input#txtDFAEMRGMKTCOREEQOEFQSingleclassormix(type='text', name='txtDFAEMRGMKTCOREEQOEFQSingleclassormix')
+                            br
+                            input#txtDIVERSIFIEDBONDTPQDSingleclassormix(type='text', name='txtDIVERSIFIEDBONDTPQDSingleclassormix')
+                            br
+                            input#txtGROWTHFUNDTPQESingleclassormix(type='text', name='txtGROWTHFUNDTPQESingleclassormix')
+                            br
+                            input#txtINTERNATIONALINDEXTPQGSingleclassormix(type='text', name='txtINTERNATIONALINDEXTPQGSingleclassormix')
+                        td.subTd
+                        td.spanTd
+                        td.spanTd
+                    tr
+                        td.firstTd(colspan='3')
+                            | Rebalance at the end of each year?
+                            br
+                            |  Mixed Fund Class allocations are Fixed or Age-Based
+                            br
+                            |  Use Current Mix (from Individual Data) for future contributions?
+                        td
+                            select#dllRebalanceattheendofeachyear(name='dllRebalanceattheendofeachyear', onchange='switchRebalanceattheendofeachyear()')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                            br
+                            select#dllMixedFundClassallocations(name='dllMixedFundClassallocations')
+                                option(value='Fixed') Fixed
+                                option(value='Age-Based') Age-Based
+                            br
+                            select#dllUseCurrentMixforfuturecontributions(name='dllUseCurrentMixforfuturecontributions', onchange='switchUseCurrentMixforfuturecontributions()')
+                                option(value='TRUE') TRUE
+                                option(value='FALSE') FALSE
+                    tr
+                        td.firstTd.innerTd(colspan='3')
+                            | Fund Allocations for Future Contributions and Rebalancing
+                    tr
+                        td.firstTd.innerTd
+                            | AGGRESSIVE FUNDTPQA
+                            br
+                            |  AGGRESSIVE GROWTH EQTCAG
+                            br
+                            |  BOND INDEXTPQB
+                            br
+                            |  BROKERAGELINKBLNK
+                            br
+                            |  CAPITAL PRESERVATIONGCTI
+                            br
+                            |  CONSERVATIVE FUNDTPQC
+                            br
+                            |  DFA EMRG MKT CORE EQOEFQ
+                            br
+                            |  DIVERSIFIED BONDTPQD
+                            br
+                            |  GROWTH FUNDTPQE
+                            br
+                            |  INTERNATIONAL INDEXTPQG
+                            br
+                        td.innerTd
+                            input#txtAGGRESSIVEFUNDTPQA(type='text', name='txtAGGRESSIVEFUNDTPQA')
+                            br
+                            input#txtAGGRESSIVEGROWTHEQTCAG(type='text', name='txtAGGRESSIVEGROWTHEQTCAG')
+                            br
+                            input#txtBONDINDEXTPQB(type='text', name='txtBONDINDEXTPQB')
+                            br
+                            input#txtBROKERAGELINKBLNK(type='text', name='txtBROKERAGELINKBLNK')
+                            br
+                            input#txtCAPITALPRESERVATIONGCTI(type='text', name='txtCAPITALPRESERVATIONGCTI')
+                            br
+                            input#txtCONSERVATIVEFUNDTPQC(type='text', name='txtCONSERVATIVEFUNDTPQC')
+                            br
+                            input#txtDFAEMRGMKTCOREEQOEFQ(type='text', name='txtDFAEMRGMKTCOREEQOEFQ')
+                            br
+                            input#txtDIVERSIFIEDBONDTPQD(type='text', name='txtDIVERSIFIEDBONDTPQD')
+                            br
+                            input#txtGROWTHFUNDTPQE(type='text', name='txtGROWTHFUNDTPQE')
+                            br
+                            input#txtINTERNATIONALINDEXTPQG(type='text', name='txtINTERNATIONALINDEXTPQG')
+                            br
+                    tr
+                        td
+                            br
+                .splitDiv
