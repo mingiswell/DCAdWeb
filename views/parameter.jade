@@ -174,9 +174,9 @@ html
                     tr
                         td.firstTd(style='vertical-align:bottom') Employee Data
                         td(colspan='3')
-                            | File Name
-                            br
-                            input.inputFile(type='file', name='fileEmployeeData')
+                            select(id='dllEmployeeData', name='dllEmployeeData')
+                                each employeeData in employeeDataList
+                                    option(value='#{employeeData}') #{employeeData}
                     tr
                         td.firstTd Import DB Results?
                         td
@@ -188,11 +188,13 @@ html
                     tr
                         td.firstTd DB Results
                         td(colspan='3')
-                            input.inputFile(type='file', name='fileDBResults')
+                            select(id='dllDBResult', name='dllDBResult')
+                                each dbResult in dbResultList
+                                    option(value='#{dbResult}') #{dbResult}
                     tr
                         td.firstTd Output File
                         td(colspan='3')
-                            input.inputFile(type='file', name='fileOutputFile')
+                            input#txtOutputFile(type='text', name='txtOutputFile')
                     tr
                         td.multiLineTd.firstTd Notes:
                         td(colspan='3')

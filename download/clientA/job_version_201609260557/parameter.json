@@ -1,8 +1,11 @@
 {
  "CensusDate": "2016/1/1",
  "ProjectType": "deterministic",
- "ImportDBResults": "FALSE",
- "Notes": "tet TRS4",
+ "EmployeeData": "participantData2.txt",
+ "ImportDBResults": "TRUE",
+ "DBResult": "DB3",
+ "OutputFile": "abc",
+ "Notes": "test trs",
  "PopulationToBeRun": "All Participants",
  "SubSetOfParticipantsNoOfParticipants": "",
  "SubSetOfParticipantsStratWithRow": "",
