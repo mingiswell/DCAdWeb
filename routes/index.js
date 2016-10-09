@@ -12,9 +12,9 @@ router.get('/', function (req, res, next) {
 // Get parameter page.
 router.get('/parameter', function (req, res, next) {
   var path = require('path');
-  var employeeDataFolder = path.resolve('download/clientA/EmployeeData');
+  var employeeDataPath = path.resolve('download/clientA/EmployeeData');
   var dbResultPath = path.resolve('download/clientA/DBResult');
-  var employeeDataList = GetAllFiles(employeeDataFolder);  
+  var employeeDataList = GetAllFiles(employeeDataPath);  
   var dbResultList = GetAllFiles(dbResultPath);
   res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
 });
@@ -28,6 +28,7 @@ router.get('/test', function (req, res, next) {
 });
 
 router.post('/process_post', function (req, res) {
+  // fetch the info from the web page
   response = {
     CensusDate: req.body.txtCensusDate,
     ProjectType: req.body.dllProjectType,
@@ -155,17 +156,16 @@ router.post('/process_post', function (req, res) {
     INTERNATIONALINDEXTPQGFundAllocations: req.body.txtINTERNATIONALINDEXTPQG,
     AGGRESSIVEGROWTHEQTCAGFundAllocations: req.body.txtAGGRESSIVEGROWTHEQTCAG
   };
-  // var obj = {};
-  // obj = response;
-  // console.log(JSON.stringify(obj));
 
-  //todo : remove hardcoded the saved JSON file
-  //create the subfolder then create the JSON file
+  // Create Job folder
   var path = require('path');
-  desFolder = path.resolve('download/clientA/job_version_201609260557')
-  // fs.mkdirSync(desFolder, 0755);
+  var jobName = "job_" + getDateTime();
+  desFolder = path.resolve('download/clientA/', jobName);
+  fs.mkdirSync(desFolder, 0755);
   var desFile = desFolder + "/parameter.json";
   console.log(desFile);
+
+  // write to json file
   fs.writeFile(desFile, JSON.stringify(response, null, ' '), function (err) {
     if (err) {
       console.log(err);
@@ -179,4 +179,28 @@ module.exports = router;
 //readdirSync method is used here. 
 function GetAllFiles(path) {
   return fs.readdirSync(path);
+}
+
+function getDateTime() {
+
+  var date = new Date();
+
+  var year = date.getFullYear();
+
+  var month = date.getMonth() + 1;
+  month = (month < 10 ? "0" : "") + month;
+
+  var day = date.getDate();
+  day = (day < 10 ? "0" : "") + day;
+
+  var hour = date.getHours();
+  hour = (hour < 10 ? "0" : "") + hour;
+
+  var min = date.getMinutes();
+  min = (min < 10 ? "0" : "") + min;
+
+  var sec = date.getSeconds();
+  sec = (sec < 10 ? "0" : "") + sec;
+
+  return year + month + day + hour + min + sec;
 }
