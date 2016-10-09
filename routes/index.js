@@ -185,12 +185,10 @@ router.post('/process_post', function (req, res) {
         if (err) {
             console.log(err);
         }
-        // res.end(JSON.stringify(response));
+        res.end(JSON.stringify(response));
     });
 });
 module.exports = router;
-
-
 
 function getDateTime() {
 
