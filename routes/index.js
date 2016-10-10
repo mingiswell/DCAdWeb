@@ -22,25 +22,8 @@ router.get('/parameter', function (req, res, next) {
 //there is an issue for the async readdir method, the return value is never get at once.
 //readdirSync method is used here. 
 function GetAllFiles(path) {
-    // var res = [];
-    // fs.readdir(path, function(err, files){
-    //   if(err != null)
-    //     console.error(err.message);
-    //   files.forEach(function(file){
-    //     res.push(file);
-    //   });
-    // });
-    // return res;
     return fs.readdirSync(path);
 }
-
-var counter = 0;
-// Test page.
-router.get('/test', function (req, res, next) {
-    counter++;
-    app.locals.counter = counter.toString();
-    res.render('test', { ip: req.ip });
-});
 
 router.post('/process_post', function (req, res) {
     // fetch the info from the web page
@@ -48,128 +31,131 @@ router.post('/process_post', function (req, res) {
         CensusDate: req.body.txtCensusDate,
         ProjectType: req.body.dllProjectType,
         EmployeeData: req.body.dllEmployeeData,
-        ImportDBResults: req.body.dllImportDBResults,
+        ImportDBResults: Boolean(req.body.dllImportDBResults),
         DBResult: req.body.dllDBResult,
         OutputFile: req.body.txtOutputFile,
         Notes: req.body.txtNotes,
         PopulationToBeRun: req.body.dllPopulationtobeRun,
-        SubSetOfParticipantsNoOfParticipants: req.body.txtNoofParticipants,
-        SubSetOfParticipantsStratWithRow: req.body.txtStartwithRow,
-        TestCasesEEID1: req.body.txttableTestCases1,
-        TestCasesEEID2: req.body.txttableTestCases2,
-        TestCasesEEID3: req.body.txttableTestCases3,
-        TestCasesEEID4: req.body.txttableTestCases4,
-        TestCasesEEID5: req.body.txttableTestCases5,
-        TestCasesEEID6: req.body.txttableTestCases6,
-        TestCasesEEID7: req.body.txttableTestCases7,
-        TestCasesEEID8: req.body.txttableTestCases8,
-        TestCasesEEID9: req.body.txttableTestCases9,
-        TestCasesEEID10: req.body.txttableTestCases10,
-        TestCasesEEID11: req.body.txttableTestCases11,
+        NumbOfEEsToRun: parseInt(req.body.txtNoofParticipants),
+        StartFromRow: parseInt(req.body.txtStartwithRow),
+        EEID1: parseInt(req.body.txttableTestCases1),
+        EEID2: parseInt(req.body.txttableTestCases2),
+        EEID3: parseInt(req.body.txttableTestCases3),
+        EEID4: parseInt(req.body.txttableTestCases4),
+        EEID5: parseInt(req.body.txttableTestCases5),
+        EEID6: parseInt(req.body.txttableTestCases6),
+        EEID7: parseInt(req.body.txttableTestCases7),
+        EEID8: parseInt(req.body.txttableTestCases8),
+        EEID9: parseInt(req.body.txttableTestCases9),
+        EEID10: parseInt(req.body.txttableTestCases10),
         TrialToBeRun: req.body.dllTrialtobeRun,
-        TestTrialNumber: req.body.txtTesttrialnumber,
-        StartAge: req.body.txtStartAge,
-        EndAge: req.body.txtEndAge,
+        TestTrialNumber: parseInt(req.body.txtTesttrialnumber),
+        StartAge: parseInt(req.body.txtStartAge),
+        EndAge: parseInt(req.body.txtEndAge),
         PayIncreaseType: req.body.dllPayIncreaseType,
-        PayGroup1: {
-            FixedInCrease: req.body.txtPayGroup1FixedIncrease,
-            AgeRelatedTable: req.body.dllPayGroup1Agerelatedtable,
-            ServiceRelatedTable: req.body.dllPayGroup1Servicerelatedtable,
-            BonusAsTarget: req.body.txtPayGroup1BonusasaPecentofTarget
+        PayRelatedAssumptions: {
+            "Fixed Increase": { "Pay Group 1": parseFloat(req.body.txtPayGroup1FixedIncrease), "Pay Group 2": req.body.txtPayGroup2FixedIncrease, "Pay Group 3": req.body.txtPayGroup3FixedIncrease },
+            "Age related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Agerelatedtable), "Pay Group 2": req.body.dllPayGroup2Agerelatedtable, "Pay Group 3": req.body.dllPayGroup3Agerelatedtable },
+            "Service related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Servicerelatedtable), "Pay Group 2": req.body.dllPayGroup2Servicerelatedtable, "Pay Group 3": req.body.dllPayGroup3Servicerelatedtable }
         },
-        PayGroup2: {
-            FixedInCrease: req.body.txtPayGroup2FixedIncrease,
-            AgeRelatedTable: req.body.dllPayGroup2Agerelatedtable,
-            ServiceRelatedTable: req.body.dllPayGroup2Servicerelatedtable,
-            BonusAsTarget: req.body.txtPayGroup2BonusasaPecentofTarget
-        },
-        PayGroup3: {
-            FixedInCrease: req.body.txtPayGroup3FixedIncrease,
-            AgeRelatedTable: req.body.dllPayGroup3Agerelatedtable,
-            ServiceRelatedTable: req.body.dllPayGroup3Servicerelatedtable,
-            BonusAsTarget: req.body.txtPayGroup3BonusasaPecentofTarget
-        },
-        AdjustedForInflation: req.body.dllAdjustedforInflation,
-        BaselineInflationForadj: req.body.txtBaselineinflationforadj,
-        MinimumIncrease: req.body.txtMinimumIncrease,
-        AssumedTaxRatePreRetirement: req.body.txtPreRetirement,
-        AssumedTaxRatePostRetirement: req.body.txtPostRetirement,
-        ProrateTargetforShortSvc: req.body.dllProrateTargetforShortSvc,
-        NoofYearsforFullTarget: req.body.txtNoofYearsforFullTarget,
-        Startingageforprorateperiod: req.body.txtStartingageforprorateperiod,
-        CustomPercentiletoincludeinoutput: req.body.txtCustomPercentiletoincludeinoutput,
-        StopAgeforpostretirementbenefits: req.body.txtStopAgeforpostretirementbenefits,
-        InterestratetocalculatePV: req.body.txtInterestratetocalculatePV,
-        ProfitSharingpercentage: req.body.txtProfitSharingpercentage,
-        IncludeBonusinProfitSharingpay: req.body.dllIncludeBonusinProfitSharingpay,
-        MinimumserviceforPSeligibility: req.body.txtMinimumserviceforPSeligibility,
-        Portionofyearinterestforannualcontribution: req.body.txtPortionofyearinterestforannualcontribution,
-        IncludeBonusin401pay: req.body.dllIncludeBonusin401pay,
-        Minimumdeferralrate: req.body.txtMinimumdeferralrate,
-        Maximumdeferralrate: req.body.txtMaximumdeferralrate,
-        AllowCatchupcontributions: req.body.dllAllowCatchupcontributions,
-        Autoescalation: req.body.dllAutoescalation,
-        AnnualIncrease: req.body.txtAnnualIncrease,
-        MaximumAutoescalation: req.body.btxtMaximumAutoescalation,
-        Ratetableforfirstx: req.body.dllRatetableforfirstx,
-        Percentageofpay: req.body.txtPercentageofpay,
-        Ratetablefornexty: req.body.dllRatetablefornexty,
-        PercentageofAdditionalPay: req.body.txtPercentageofadditionalpay,
-        IncludeAftertaxcontributions: req.body.dllIncludeAftertaxcontributions,
-        Maxoverallmatchasapercentageofpay: req.body.txtMaxoverallmatchasapercentageofpay,
-        Maximumdollarmatch: req.body.txtMaximumdollarmatch,
-        Adjustmaximumdollarmatchforinflation: req.body.dllAdjustmaximumdollarmatchforinflation,
-        Adjustformedicalexpenses: req.body.dllAdjustformedicalexpenses,
-        Preretirementmedicalexpenses: req.body.txtPreretirementmedicalexpenses,
-        PostretirementmedicalexpensesPre65: req.body.txtPostretirementmedicalexpensesPre65,
-        PostretirementmedicalexpensesPost65: req.body.txtPostretirementmedicalexpensesPost65,
-        SocialSecurityCOLAAssumption: req.body.txtSocialSecurityCOLAAssumption,
-        WageBaseIncreaseAssumption: req.body.txtWageBaseIncreaseAssumption,
-        SocialSecurityPIACommencementAge: req.body.txtSocialSecurityPIACommencementAge,
-        HistoricalPayScale: req.body.txtHistoricalPayScale,
-        AGGRESSIVEFUNDTPQASingleclassormix: req.body.dllAGGRESSIVEFUNDTPQASingleclassormix,
-        AGGRESSIVEGROWTHEQTCAGSingleclassormix: req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclassormix,
-        BONDINDEXTPQBSingleclassormix: req.body.dllBONDINDEXTPQBSingleclassormix,
-        BROKERAGELINKBLNKSingleclassormix: req.body.dllBROKERAGELINKBLNKSingleclassormix,
-        CAPITALPRESERVATIONGCTISingleclassormix: req.body.dllCAPITALPRESERVATIONGCTISingleclassormix,
-        CONSERVATIVEFUNDTPQCSingleclassormix: req.body.dllCONSERVATIVEFUNDTPQCSingleclassormix,
-        DFAEMRGMKTCOREEQOEFQSingleclassormix: req.body.dllDFAEMRGMKTCOREEQOEFQSingleclassormix,
-        DIVERSIFIEDBONDTPQDSingleclassormix: req.body.dllDIVERSIFIEDBONDTPQDSingleclassormix,
-        GROWTHFUNDTPQESingleclassormix: req.body.dllGROWTHFUNDTPQESingleclassormix,
-        INTERNATIONALINDEXTPQGSingleclassormix: req.body.dllINTERNATIONALINDEXTPQGSingleclassormix,
-        AGGRESSIVEFUNDTPQASingleclass: req.body.dllAGGRESSIVEFUNDTPQASingleclass,
-        AGGRESSIVEGROWTHEQTCAGSingleclass: req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclass,
-        BONDINDEXTPQBSingleclass: req.body.dllBONDINDEXTPQBSingleclass,
-        BROKERAGELINKBLNKSingleclass: req.body.dllBROKERAGELINKBLNKSingleclass,
-        CAPITALPRESERVATIONGCTISingleclass: req.body.dllCAPITALPRESERVATIONGCTISingleclass,
-        CONSERVATIVEFUNDTPQCSingleclass: req.body.dllCONSERVATIVEFUNDTPQCSingleclass,
-        DFAEMRGMKTCOREEQOEFQSingleclass: req.body.dllDFAEMRGMKTCOREEQOEFQSingleclass,
-        DIVERSIFIEDBONDTPQDSingleclass: req.body.dllDIVERSIFIEDBONDTPQDSingleclass,
-        GROWTHFUNDTPQESingleclass: req.body.dllGROWTHFUNDTPQESingleclass,
-        INTERNATIONALINDEXTPQGSingleclass: req.body.dllINTERNATIONALINDEXTPQGSingleclass,
-        AGGRESSIVEFUNDTPQA: req.body.txtAGGRESSIVEFUNDTPQASingleclassormix,
-        AGGRESSIVEGROWTHEQTCAG: req.body.txtAGGRESSIVEGROWTHEQTCAGSingleclassormix,
-        BONDINDEXTPQB: req.body.txtBONDINDEXTPQBSingleclassormix,
-        BROKERAGELINKBLNK: req.body.txtBROKERAGELINKBLNKSingleclassormix,
-        CAPITALPRESERVATIONGCTI: req.body.txtCAPITALPRESERVATIONGCTISingleclassormix,
-        CONSERVATIVEFUNDTPQC: req.body.txtCONSERVATIVEFUNDTPQCSingleclassormix,
-        DFAEMRGMKTCOREEQOEFQ: req.body.txtDFAEMRGMKTCOREEQOEFQSingleclassormix,
-        DIVERSIFIEDBONDTPQD: req.body.txtDIVERSIFIEDBONDTPQDSingleclassormix,
-        GROWTHFUNDTPQE: req.body.txtGROWTHFUNDTPQESingleclassormix,
-        INTERNATIONALINDEXTPQG: req.body.txtINTERNATIONALINDEXTPQGSingleclassormix,
-        Rebalanceattheendofeachyear: req.body.dllRebalanceattheendofeachyear,
-        MixedFundClassallocations: req.body.dllMixedFundClassallocations,
-        UseCurrentMixforfuturecontributions: req.body.dllUseCurrentMixforfuturecontributions,
-        AGGRESSIVEFUNDTPQAFundAllocations: req.body.txtAGGRESSIVEFUNDTPQA,
-        BONDINDEXTPQBFundAllocations: req.body.txtBONDINDEXTPQB,
-        BROKERAGELINKBLNKFundAllocations: req.body.txtBROKERAGELINKBLNK,
-        CAPITALPRESERVATIONGCTIFundAllocations: req.body.txtCAPITALPRESERVATIONGCTI,
-        CONSERVATIVEFUNDTPQCFundAllocations: req.body.txtCONSERVATIVEFUNDTPQC,
-        DFAEMRGMKTCOREEQOEFQFundAllocations: req.body.txtDFAEMRGMKTCOREEQOEFQ,
-        DIVERSIFIEDBONDTPQDFundAllocations: req.body.txtDIVERSIFIEDBONDTPQD,
-        GROWTHFUNDTPQEFundAllocations: req.body.txtGROWTHFUNDTPQE,
-        INTERNATIONALINDEXTPQGFundAllocations: req.body.txtINTERNATIONALINDEXTPQG,
-        AGGRESSIVEGROWTHEQTCAGFundAllocations: req.body.txtAGGRESSIVEGROWTHEQTCAG
+        TableBonusPctTarget: { "Pay Group 1": parseFloat(req.body.txtPayGroup1BonusasaPecentofTarget), "Pay Group 2": parseFloat(req.body.txtPayGroup2BonusasaPecentofTarget), "Pay Group 3": parseFloat(req.body.txtPayGroup3BonusasaPecentofTarget)},
+        AdjForInflation: Boolean(req.body.dllAdjustedforInflation),
+        BaselineInflationForadj: parseFloat(req.body.txtBaselineinflationforadj),
+        MinPayInc: parseInt(req.body.txtMinimumIncrease),
+        TaxRatePreRet: parseFloat(req.body.txtPreRetirement),
+        TaxRatePostRet: parseFloat(req.body.txtPostRetirement),
+        ProrateForShortSvc: Boolean(req.body.dllProrateTargetforShortSvc),
+        YrsForFullTarget: parseInt(req.body.txtNoofYearsforFullTarget),
+        StartingAgeForProratePeriod: parseInt(req.body.txtStartingageforprorateperiod),
+        CustomPercentile: parseFloat(req.body.txtCustomPercentiletoincludeinoutput),
+        CovStopAge: parseInt(req.body.txtStopAgeforpostretirementbenefits),
+        PVIntRate: parseFloat(req.body.txtInterestratetocalculatePV),
+        PSPercentage: parseFloat(req.body.txtProfitSharingpercentage),
+        PSIncludeBonus: Boolean(req.body.dllIncludeBonusinProfitSharingpay),
+        PSMinService: parseInt(req.body.txtMinimumserviceforPSeligibility),
+        PSPOYInt: parseFloat(req.body.txtPortionofyearinterestforannualcontribution),
+        IncludeBonus401K: Boolean(req.body.dllIncludeBonusin401pay),
+        MinPreTaxDefRate: parseFloat(req.body.txtMinimumdeferralrate),
+        MaxPreTaxDefRate: parseFloat(req.body.txtMaximumdeferralrate),
+        AllowCatchUp: Boolean(req.body.dllAllowCatchupcontributions),
+        AutoEscalation: Boolean(req.body.dllAutoescalation),
+        AutoEscalationAnnualIncrease: parseFloat(req.body.txtAnnualIncrease),
+        AutoEscalationMax: parseFloat(req.body.txtMaximumAutoescalation),
+        MatchTableNum1: req.body.dllRatetableforfirstx,
+        MatchPayPct1: parseFloat(req.body.txtPercentageofpay),
+        MatchTableNum2: req.body.dllRatetablefornexty,
+        MatchPayPct2: parseFloat(req.body.txtPercentageofadditionalpay),
+        IncludeATContForMatch: Boolean(req.body.dllIncludeAftertaxcontributions),
+        MaxMatchPctOfPay: parseFloat(req.body.txtMaxoverallmatchasapercentageofpay),
+        MaxMatchDollar: parseInt(req.body.txtMaximumdollarmatch),
+        MaxMatchDollarIncludeInflation: Boolean(req.body.dllAdjustmaximumdollarmatchforinflation),
+        AdjForPRM: Boolean(req.body.dllAdjustformedicalexpenses),
+        RetMedPreRetCost: Boolean(req.body.txtPreretirementmedicalexpenses),
+        RetMedPre65GrossCost: parseInt(req.body.txtPostretirementmedicalexpensesPre65),
+        RetMedPost65GrossCost: parseInt(req.body.txtPostretirementmedicalexpensesPost65),
+        SocSecCOLA: parseFloat(req.body.txtSocialSecurityCOLAAssumption),
+        WageBaseInc: parseFloat(req.body.txtWageBaseIncreaseAssumption),
+        SSPIAStartAge: parseInt(req.body.txtSocialSecurityPIACommencementAge),
+        PIAHistSS: parseFloat(req.body.txtHistoricalPayScale),
+        FundAlloc: ["AGGRESSIVE FUNDTPQA",
+            "AGGRESSIVE GROWTH EQTCAG",
+            "BOND INDEXTPQB",
+            "BROKERAGELINKBLNK",
+            "CAPITAL PRESERVATIONGCTI",
+            "CONSERVATIVE FUNDTPQC",
+            "DFA EMRG MKT CORE EQOEFQ",
+            "DIVERSIFIED BONDTPQD",
+            "GROWTH FUNDTPQE",
+            "INTERNATIONAL INDEXTPQG"],
+        FundAllocPct: ["AGGRESSIVE FUNDTPQA _PCT",
+            "AGGRESSIVE GROWTH EQTCAG _PCT",
+            "BOND INDEXTPQB _PCT",
+            "BROKERAGELINKBLNK _PCT",
+            "CAPITAL PRESERVATIONGCTI _PCT",
+            "CONSERVATIVE FUNDTPQC _PCT",
+            "DFA EMRG MKT CORE EQOEFQ _PCT",
+            "DIVERSIFIED BONDTPQD _PCT",
+            "GROWTH FUNDTPQE _PCT",
+            "INTERNATIONAL INDEXTPQG _PCT"],
+        SingleOrMix: [
+            parseInt(req.body.dllAGGRESSIVEFUNDTPQASingleclassormix),
+            parseInt(req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclassormix),
+            parseInt(req.body.dllBONDINDEXTPQBSingleclassormix),
+            parseInt(req.body.dllBROKERAGELINKBLNKSingleclassormix),
+            parseInt(req.body.dllCAPITALPRESERVATIONGCTISingleclassormix),
+            parseInt(req.body.dllCONSERVATIVEFUNDTPQCSingleclassormix),
+            parseInt(req.body.dllDFAEMRGMKTCOREEQOEFQSingleclassormix),
+            parseInt(req.body.dllDIVERSIFIEDBONDTPQDSingleclassormix),
+            parseInt(req.body.dllGROWTHFUNDTPQESingleclassormix),
+            parseInt(req.body.dllINTERNATIONALINDEXTPQGSingleclassormix)
+        ],
+        RebalanceValues:[
+            parseInt(req.body.txtAGGRESSIVEFUNDTPQA),
+            parseInt(req.body.txtAGGRESSIVEGROWTHEQTCAG),
+            parseInt(req.body.txtBONDINDEXTPQB),
+            parseInt(req.body.txtBROKERAGELINKBLNK),
+            parseInt(req.body.txtCAPITALPRESERVATIONGCTI),
+            parseInt(req.body.txtCONSERVATIVEFUNDTPQC),
+            parseInt(req.body.txtDFAEMRGMKTCOREEQOEFQ),
+            parseInt(req.body.txtDIVERSIFIEDBONDTPQD),
+            parseInt(req.body.txtGROWTHFUNDTPQE),
+            parseInt(req.body.txtINTERNATIONALINDEXTPQG)
+            ],
+        Class: [
+            req.body.dllAGGRESSIVEFUNDTPQASingleclass,
+            req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclass,
+            req.body.dllBONDINDEXTPQBSingleclass,
+            req.body.dllBROKERAGELINKBLNKSingleclass,
+            req.body.dllCAPITALPRESERVATIONGCTISingleclass,
+            req.body.dllCONSERVATIVEFUNDTPQCSingleclass,
+            req.body.dllDFAEMRGMKTCOREEQOEFQSingleclass,
+            req.body.dllDIVERSIFIEDBONDTPQDSingleclass,
+            req.body.dllGROWTHFUNDTPQESingleclass,
+            req.body.dllINTERNATIONALINDEXTPQGSingleclass
+        ], 
+        Rebalance: Boolean(req.body.dllRebalanceattheendofeachyear),
+        MixedFundType: req.body.dllMixedFundClassallocations,
+        UseCurrentMix: Boolean(req.body.dllUseCurrentMixforfuturecontributions),
     };
 
     // Create Job folder
@@ -191,25 +177,17 @@ router.post('/process_post', function (req, res) {
 module.exports = router;
 
 function getDateTime() {
-
     var date = new Date();
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
     month = (month < 10 ? "0" : "") + month;
-
     var day = date.getDate();
     day = (day < 10 ? "0" : "") + day;
-
     var hour = date.getHours();
     hour = (hour < 10 ? "0" : "") + hour;
-
     var min = date.getMinutes();
     min = (min < 10 ? "0" : "") + min;
-
     var sec = date.getSeconds();
     sec = (sec < 10 ? "0" : "") + sec;
-
     return year + month + day + hour + min + sec;
 }
