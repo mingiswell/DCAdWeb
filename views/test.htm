@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=GBK">
+    <link rel="stylesheet" type="text/css" href="table.css">
+    <title></title>
+    <style type="text/css">
+        select {
+            width: 100px;
+        }
+    </style>
+    <script type="text/javascript">
+		</script>
+</head>
+
+<body>
+    <script type="text/javascript">
+			function selectCity()
+			{
+				var collCities=[['选择城市']
+								,['海淀区','朝阳区','东城区','西城区']
+								,['济南','青岛','烟台']
+								,['福州','厦门','泉州','莆田']];
+				//获取两个下拉菜单
+				var oSelNode = document.getElementById("selid");
+				var oSubNode = document.getElementById("subselid");
+				//获取到底是哪个省
+				var index = oSelNode.selectedIndex;
+				//通过角标到容器中去获取对应的城市数组
+				var arrCities = collCities[index];
+				
+				//添加之前，要先把之前的值清空
+				/*
+				for(var i=0;i<oSubNode.options.length;)
+				{
+					oSubNode.removeChild(oSubNode.options[i]);
+				}
+				*/
+				//一个消空更方便的方法、、
+				oSubNode.length=0;
+				//遍历这个数组，把里面的数据放入第二个下拉菜单中
+				for(var i=0;i<arrCities.length;i++)
+				{
+					var oOpNode = document.createElement("option");
+					oOpNode.innerHTML = arrCities[i];
+					oSubNode.appendChild(oOpNode);
+				}
+			}
+		</script>
+    <select id="selid" onchange="selectCity()">
+			<option>选择省市</option>
+			<option>北京市</option>
+			<option>山东省</option>
+			<option>福建省</option>
+		</select>
+    <select id="subselid">
+			<option>选择城市</option>
+		</select>
+</body>
+
+</html>

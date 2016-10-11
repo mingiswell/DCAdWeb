@@ -78,79 +78,125 @@ html
             }
         script(type='text/javascript').
             function load() {
-            switchPayIncreaseType();
+                switchPayIncreaseType();
             }
             function switchPopbulationtobeRun() {
-            switch (document.getElementById('dllPopulationtobeRun').value) {
-            case "Subset of Participants":
-            document.getElementById('tdSubsetofParticipants1').style.visibility = "visible";
-            document.getElementById('tdSubsetofParticipants2').style.visibility = "visible";
-            document.getElementById('tdSubsetofParticipants3').style.visibility = "visible";
-            document.getElementById('divTestCases').style.visibility = "hidden";
-            break;
-            case "Test Cases":
-            document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
-            document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
-            document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
-            document.getElementById('divTestCases').style.visibility = "visible";
-            break;
-            default:
-            document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
-            document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
-            document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
-            document.getElementById('divTestCases').style.visibility = "hidden";
-            }
+                switch (document.getElementById('dllPopulationtobeRun').value) {
+                case "Subset of Participants":
+                document.getElementById('tdSubsetofParticipants1').style.visibility = "visible";
+                document.getElementById('tdSubsetofParticipants2').style.visibility = "visible";
+                document.getElementById('tdSubsetofParticipants3').style.visibility = "visible";
+                document.getElementById('divTestCases').style.visibility = "hidden";
+                break;
+                case "Test Cases":
+                document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
+                document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
+                document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
+                document.getElementById('divTestCases').style.visibility = "visible";
+                break;
+                default:
+                document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
+                document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
+                document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
+                document.getElementById('divTestCases').style.visibility = "hidden";
+                }
             }
             function switchTrialtobeRun() {
-            var TrialValue = document.getElementById('dllTrialtobeRun').value;
-            if (TrialValue == "Test Trial") {
-            document.getElementById('lblTesttrialnumber').style.visibility = "visible";
-            document.getElementById('tdTesttrialnumber').style.visibility = "visible";
-            } else {
-            document.getElementById('lblTesttrialnumber').style.visibility = "hidden";
-            document.getElementById('tdTesttrialnumber').style.visibility = "hidden";
-            }
+                var TrialValue = document.getElementById('dllTrialtobeRun').value;
+                if (TrialValue == "Test Trial") {
+                document.getElementById('lblTesttrialnumber').style.visibility = "visible";
+                document.getElementById('tdTesttrialnumber').style.visibility = "visible";
+                } else {
+                document.getElementById('lblTesttrialnumber').style.visibility = "hidden";
+                document.getElementById('tdTesttrialnumber').style.visibility = "hidden";
+                }
             }
             function switchPayIncreaseType() {
-            switch (document.getElementById('dllPayIncreaseType').value) {
-            case "Fixed Increase":
-            document.getElementById('txtPayGroup1FixedIncrease').value = "2.0%";
-            document.getElementById('txtPayGroup2FixedIncrease').value = "2.0%";
-            document.getElementById('txtPayGroup3FixedIncrease').value = "3.0%";
-            document.getElementById('dllPayGroup1Agerelatedtable').value = "";
-            document.getElementById('dllPayGroup2Agerelatedtable').value = "";
-            document.getElementById('dllPayGroup3Agerelatedtable').value = "";
-            document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
-            document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
-            document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
-            break;
-            case "Age related table":
-            document.getElementById('txtPayGroup1FixedIncrease').value = "";
-            document.getElementById('txtPayGroup2FixedIncrease').value = "";
-            document.getElementById('txtPayGroup3FixedIncrease').value = "";
-            document.getElementById('dllPayGroup1Agerelatedtable').value = "Table 2";
-            document.getElementById('dllPayGroup2Agerelatedtable').value = "Table 1";
-            document.getElementById('dllPayGroup3Agerelatedtable').value = "Table 2";
-            document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
-            document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
-            document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
-            break;
-            case "Service related table":
-            document.getElementById('txtPayGroup1FixedIncrease').value = "";
-            document.getElementById('txtPayGroup2FixedIncrease').value = "";
-            document.getElementById('txtPayGroup3FixedIncrease').value = "";
-            document.getElementById('dllPayGroup1Agerelatedtable').value = "";
-            document.getElementById('dllPayGroup2Agerelatedtable').value = "";
-            document.getElementById('dllPayGroup3Agerelatedtable').value = "";
-            document.getElementById('dllPayGroup1Servicerelatedtable').value = "Table 6";
-            document.getElementById('dllPayGroup2Servicerelatedtable').value = "Table 7";
-            document.getElementById('dllPayGroup3Servicerelatedtable').value = "Table 7";
-            break;
-            default:
+                switch (document.getElementById('dllPayIncreaseType').value) {
+                case "Fixed Increase":
+                document.getElementById('txtPayGroup1FixedIncrease').value = "2.0%";
+                document.getElementById('txtPayGroup2FixedIncrease').value = "2.0%";
+                document.getElementById('txtPayGroup3FixedIncrease').value = "3.0%";
+                document.getElementById('dllPayGroup1Agerelatedtable').value = "";
+                document.getElementById('dllPayGroup2Agerelatedtable').value = "";
+                document.getElementById('dllPayGroup3Agerelatedtable').value = "";
+                document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
+                document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
+                document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
+                break;
+                case "Age related table":
+                document.getElementById('txtPayGroup1FixedIncrease').value = "";
+                document.getElementById('txtPayGroup2FixedIncrease').value = "";
+                document.getElementById('txtPayGroup3FixedIncrease').value = "";
+                document.getElementById('dllPayGroup1Agerelatedtable').value = "Table 2";
+                document.getElementById('dllPayGroup2Agerelatedtable').value = "Table 1";
+                document.getElementById('dllPayGroup3Agerelatedtable').value = "Table 2";
+                document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
+                document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
+                document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
+                break;
+                case "Service related table":
+                document.getElementById('txtPayGroup1FixedIncrease').value = "";
+                document.getElementById('txtPayGroup2FixedIncrease').value = "";
+                document.getElementById('txtPayGroup3FixedIncrease').value = "";
+                document.getElementById('dllPayGroup1Agerelatedtable').value = "";
+                document.getElementById('dllPayGroup2Agerelatedtable').value = "";
+                document.getElementById('dllPayGroup3Agerelatedtable').value = "";
+                document.getElementById('dllPayGroup1Servicerelatedtable').value = "Table 6";
+                document.getElementById('dllPayGroup2Servicerelatedtable').value = "Table 7";
+                document.getElementById('dllPayGroup3Servicerelatedtable').value = "Table 7";
+                break;
+                default:
+                }
             }
+            function switchclassormix(oSelNode, oSubNode){
+                var colClass = [[''],
+                            ['Conservative-35', 'Conservative-55', 'Conservative-65', 'Moderate-35'],
+                            ['FI: US Aggregate FI',
+                                'FI: US Intermediate G/C FI',
+                                'FI: Non-US Govt FI Hedged ',
+                                'FI: US Short G/C FI',
+                                'EQ: US Large Cap Equity',
+                                'EQ: US Mid Cap Value (Estimate)',
+                                'EQ: Int. Equity - Devlpd Mkts Hedged',
+                                'EQ: Emerging Markets Equity Unhedged',
+                                'EQ: AC World ex-US All Cap Equity Unhedged',
+                                'FI: US Long G/C FI',
+                                'TIPS',
+                                'FI: US Cash',
+                                'EQ: S&P 500 Index',
+                                'OTHER: Private Equity - Venture Cap',
+                                'EQ: US All Cap Equity',
+                                'FI: US Intermediate G/C FI3',
+                                'EQ: EAFE Growth Index',
+                                'EQ: US Equity - Large Cap Growth',
+                                'EQ: Int. Equity - Small Cap',
+                                'EQ: US Small Cap Equity',
+                                'Custom Asset Class 1',
+                                'Custom Asset Class 2',
+                                'Custom Asset Class 3',
+                                'Custom Asset Class 4',
+                                'Custom Asset Class 5',
+                                'Custom Asset Class 6',
+                                'Custom Asset Class 7',
+                                'Custom Asset Class 8',
+                                'Custom Asset Class 9',
+                                'Custom Asset Class 10']
+                            ];
+                var index = oSelNode.selectedIndex + 1;
+                for(var i=0;i<oSubNode.options.length;)
+                {
+                    oSubNode.removeChild(oSubNode.options[i]);
+                }
+                
+                var arrClass = colClass[index];
+                for(i = 0; i < arrClass.length; i++){
+                    var oOpNode = document.createElement("option");
+                    oOpNode.innerHTML = arrClass[i];
+                    oSubNode.appendChild(oOpNode);
+                }
             }
             function switchAutoescalation() {}
-            function switchclassormix(SingleClassorMixId, ClassId) {}
             function switchRebalanceattheendofeachyear() {}
             function switchUseCurrentMixforfuturecontributions() {}
     body(onload='load();')
