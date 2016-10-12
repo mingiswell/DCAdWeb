@@ -1,0 +1,93 @@
+doctype html
+html
+  //if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+  head
+    title TRS Workbook
+    link(rel='stylesheet', href='css/style.css', media='screen')
+    // MAIN STYLE CSS FILE
+    link#style-color(rel='stylesheet', href='css/colors/blue-color.css', media='screen')
+    // DEFAULT BLUE COLOR CSS FILE
+  body
+    #container
+      // main container starts
+      #wrapp
+        // main wrapp starts
+        header#header
+          // header starts
+          #header-links
+          .container
+            .head-wrapp
+              a#logo(href='index')
+                img(src='images/logo.png', alt='')
+                | TRS Workbook
+              // your logo
+          #main-navigation
+            // main navigation wrapper starts
+            .container
+              ul.main-menu
+                li
+                  a(href='index') Home
+                li
+                  a#current(href='Clients') Clients
+                li
+                  a(href='MetaData') MetaData
+                li
+                  a(href='Jobs') Jobs
+              // main navigation ends
+              .after-nav-info
+                h4 Li, Qiao
+          // main navigation wrapper ends
+        // header ends
+        #breadcrumb
+          .container
+            .one-half
+              h4 Client Detail:
+            .one-half
+              a.button.color.big.round(href='Parameter') Create New Job
+              // breadcrumb nav ends
+        .intro-features
+          // intro features panel starts
+          .container
+            .blog-post.layout-2
+              a.button.color.big.round(href='NewEmployeeData') Add EmployeeData
+              a.button.color.big.round(href='#') Delete EmployeeData
+            .blog-post.layout-2
+              div(style='float: left;width:20px')
+                input(type='checkbox')
+              .permalink EmployeeData1
+            .blog-post.layout-2
+              div(style='float: left;width:20px')
+                input(type='checkbox')
+              .permalink EmployeeData2
+            .blog-post.layout-2
+              div(style='float: left;width:20px')
+                input(type='checkbox')
+              .permalink EmployeeData3
+        // intro features panel ends
+        .intro-features
+          // intro features panel starts
+          .container
+            .blog-post.layout-2
+              a.button.color.big.round(href='NewDBResult') Add DB Result
+              a.button.color.big.round(href='#') Delete DB Result
+            .blog-post.layout-2
+              div(style='float: left;width:20px')
+                input(type='checkbox')
+              .permalink DB Result 1
+            .blog-post.layout-2
+              div(style='float: left;width:20px')
+                input(type='checkbox')
+              .permalink DB Result 2
+            .blog-post.layout-2
+              div(style='float: left;width:20px')
+                input(type='checkbox')
+              .permalink DB Result 3
+        // intro features panel ends
+        section#copyrights
+          section.container
+            .one-half
+              p
+                | © 2016 Mercer LLC, All Rights Reserved.
+      // main wrapp starts
+    // main container ends

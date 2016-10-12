@@ -1,0 +1,56 @@
+doctype html
+html
+  //if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+  head
+    title TRS Workbook
+    link(rel='stylesheet', href='css/style.css', media='screen')
+    // MAIN STYLE CSS FILE
+    link#style-color(rel='stylesheet', href='css/colors/blue-color.css', media='screen')
+    // DEFAULT BLUE COLOR CSS FILE
+  body
+    #container
+      // main container starts
+      #wrapp
+        // main wrapp starts
+        header#header
+          // header starts
+          #header-links
+          .container
+            .head-wrapp
+              a#logo(href='index')
+                img(src='images/logo.png', alt='')
+                | TRS Workbook
+              // your logo
+          #main-navigation
+            // main navigation wrapper starts
+            .container
+              ul.main-menu
+                li
+                  a(href='index') Home
+                li
+                  a#current(href='Clients') Clients
+                li
+                  a(href='MetaData') MetaData
+                li
+                  a(href='Jobs') Jobs
+              // main navigation ends
+              .after-nav-info
+                h4 Li, Qiao
+          // main navigation wrapper ends
+        // header ends
+        .intro-features
+          // intro features panel starts
+          .container
+            fieldset.one-fourth
+              i.icon-user
+              input.text.requiredField(type='text', value='Client Name', onblur="if(this.value=='')this.value='Client Name';", onfocus="if(this.value=='Client Name')this.value='';", name='name')
+            a.button.color.big.round(href='Clients') OK
+        // intro features panel ends
+        section#copyrights
+          section.container
+            .one-half
+              p
+                | © 2016 Mercer LLC, All Rights Reserved.
+      // main wrapp starts
+    // main container ends
