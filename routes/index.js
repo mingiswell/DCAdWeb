@@ -8,6 +8,44 @@ var fs = require('fs');
 router.get('/', function (req, res, next) {
     res.render('index', { title: 'Express' });
 });
+router.get('/index', function (req, res, next) {
+    res.render('index', { title: 'Express' });
+});
+
+/* GET Clients page. */
+router.get('/Clients', function (req, res, next) {
+    res.render('Clients');
+});
+
+/* GET Client Detail page. */
+router.get('/ClientDetail', function (req, res, next) {
+    res.render('ClientDetail');
+});
+
+/* GET MetaData page. */
+router.get('/MetaData', function (req, res, next) {
+    res.render('MetaData');
+});
+
+/* GET New Client page. */
+router.get('/NewClient', function (req, res, next) {
+    res.render('NewClient');
+});
+
+/* GET New Jobs page. */
+router.get('/Jobs', function (req, res, next) {
+    res.render('Jobs');
+});
+
+/* GET New DB Result page. */
+router.get('/NewDBResult', function (req, res, next) {
+    res.render('NewDBResult');
+});
+
+/* GET New DB Result page. */
+router.get('/NewEmployeeData', function (req, res, next) {
+    res.render('NewEmployeeData');
+});
 
 // Get parameter page.
 router.get('/parameter', function (req, res, next) {
@@ -58,7 +96,7 @@ router.post('/process_post', function (req, res) {
             "Age related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Agerelatedtable), "Pay Group 2": req.body.dllPayGroup2Agerelatedtable, "Pay Group 3": req.body.dllPayGroup3Agerelatedtable },
             "Service related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Servicerelatedtable), "Pay Group 2": req.body.dllPayGroup2Servicerelatedtable, "Pay Group 3": req.body.dllPayGroup3Servicerelatedtable }
         },
-        TableBonusPctTarget: { "Pay Group 1": parseFloat(req.body.txtPayGroup1BonusasaPecentofTarget), "Pay Group 2": parseFloat(req.body.txtPayGroup2BonusasaPecentofTarget), "Pay Group 3": parseFloat(req.body.txtPayGroup3BonusasaPecentofTarget)},
+        TableBonusPctTarget: { "Pay Group 1": parseFloat(req.body.txtPayGroup1BonusasaPecentofTarget), "Pay Group 2": parseFloat(req.body.txtPayGroup2BonusasaPecentofTarget), "Pay Group 3": parseFloat(req.body.txtPayGroup3BonusasaPecentofTarget) },
         AdjForInflation: Boolean(req.body.dllAdjustedforInflation),
         BaselineInflationForadj: parseFloat(req.body.txtBaselineinflationforadj),
         MinPayInc: parseInt(req.body.txtMinimumIncrease),
@@ -129,7 +167,7 @@ router.post('/process_post', function (req, res) {
             parseInt(req.body.dllGROWTHFUNDTPQESingleclassormix),
             parseInt(req.body.dllINTERNATIONALINDEXTPQGSingleclassormix)
         ],
-        RebalanceValues:[
+        RebalanceValues: [
             parseInt(req.body.txtAGGRESSIVEFUNDTPQA),
             parseInt(req.body.txtAGGRESSIVEGROWTHEQTCAG),
             parseInt(req.body.txtBONDINDEXTPQB),
@@ -140,7 +178,7 @@ router.post('/process_post', function (req, res) {
             parseInt(req.body.txtDIVERSIFIEDBONDTPQD),
             parseInt(req.body.txtGROWTHFUNDTPQE),
             parseInt(req.body.txtINTERNATIONALINDEXTPQG)
-            ],
+        ],
         Class: [
             req.body.dllAGGRESSIVEFUNDTPQASingleclass,
             req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclass,
@@ -152,7 +190,7 @@ router.post('/process_post', function (req, res) {
             req.body.dllDIVERSIFIEDBONDTPQDSingleclass,
             req.body.dllGROWTHFUNDTPQESingleclass,
             req.body.dllINTERNATIONALINDEXTPQGSingleclass
-        ], 
+        ],
         Rebalance: Boolean(req.body.dllRebalanceattheendofeachyear),
         MixedFundType: req.body.dllMixedFundClassallocations,
         UseCurrentMix: Boolean(req.body.dllUseCurrentMixforfuturecontributions),
