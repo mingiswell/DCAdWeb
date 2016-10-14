@@ -3,6 +3,7 @@ var router = express.Router();
 var app = express();
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var path = require('path');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -14,7 +15,9 @@ router.get('/index', function (req, res, next) {
 
 /* GET Clients page. */
 router.get('/Clients', function (req, res, next) {
-    res.render('Clients');
+    var clientPath = path.resolve('download');
+    var clientList = GetAllFolders(clientPath);
+    res.render('Clients', { 'clientList': clientList });
 });
 
 /* GET Client Detail page. */
@@ -49,13 +52,20 @@ router.get('/NewEmployeeData', function (req, res, next) {
 
 // Get parameter page.
 router.get('/parameter', function (req, res, next) {
-    var path = require('path');
     var employeeDataPath = path.resolve('download/clientA/EmployeeData');
     var dbResultPath = path.resolve('download/clientA/DBResult');
     var employeeDataList = GetAllFiles(employeeDataPath);
     var dbResultList = GetAllFiles(dbResultPath);
     res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
 });
+
+
+// Get all the folders based on the path
+function GetAllFolders(srcPath){
+    return fs.readdirSync(srcPath).filter(function(file){
+        return fs.statSync(path.join(scrPath, file)).isDirectory();
+    });
+}
 
 //there is an issue for the async readdir method, the return value is never get at once.
 //readdirSync method is used here. 
