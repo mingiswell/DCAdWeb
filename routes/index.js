@@ -59,18 +59,31 @@ router.get('/parameter', function (req, res, next) {
     res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
 });
 
-
 // Get all the folders based on the path
 function GetAllFolders(srcPath){
-    return fs.readdirSync(srcPath).filter(function(file){
-        return fs.statSync(path.join(scrPath, file)).isDirectory();
-    });
+    var directoryList = [];
+    var files = fs.readdirSync(srcPath);
+    files.forEach(function(file) {
+        var statInfo = fs.statSync(path.join(srcPath, file));
+        if(statInfo.isDirectory()){
+            directoryList.push(file);
+        }
+    }, this);
+    return directoryList;
 }
 
 //there is an issue for the async readdir method, the return value is never get at once.
 //readdirSync method is used here. 
 function GetAllFiles(path) {
-    return fs.readdirSync(path);
+    var fileList = [];
+    var files = fs.readdirSync(srcPath);
+    files.forEach(function (file) {
+        var statInfo = fs.statSync(path.join(srcPath, file));
+        if (statInfo.isFile()) {
+            fileList.push(file);
+        }
+    }, this);
+    return fileList;
 }
 
 router.post('/process_post', function (req, res) {
