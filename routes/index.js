@@ -59,33 +59,57 @@ router.get('/parameter', function (req, res, next) {
     res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
 });
 
-// Get all the folders based on the path
-function GetAllFolders(srcPath){
-    var directoryList = [];
-    var files = fs.readdirSync(srcPath);
-    files.forEach(function(file) {
-        var statInfo = fs.statSync(path.join(srcPath, file));
-        if(statInfo.isDirectory()){
-            directoryList.push(file);
+//Add new client and its subfolders (DBResult and EmployeeData) 
+//and return to ClientDetail page
+router.post('/process_addclient', function (req, res) {
+    var newClientName = req.body.name;
+
+    // Create Job folder
+    var path = require('path');
+    desFolder = path.resolve('download/', newClientName);
+    fs.mkdirSync(desFolder, 0755);
+
+    // Create DBResult folder under Job Folder
+    var path = require('path');
+    desFolder = path.resolve('download/' + newClientName + '/DBResult');
+    fs.mkdirSync(desFolder, 0755);
+
+    //Create EmployeeData folder under Job Folder
+    var path = require('path');
+    desFolder = path.resolve('download/' + newClientName + '/EmployeeData');
+    fs.mkdirSync(desFolder, 0755);
+
+    res.redirect('Clients');
+});
+
+//delete the selected client
+router.post('/process_deleteclient', function (req, res) {
+    var clientPath = path.resolve('download');
+    var clientList = GetAllFolders(clientPath);
+    var clientToBeDeletedList = [];
+
+    clientList.forEach(function (clientName) {
+        controlId = 'chb_' + clientName;
+        var checkBox = req.body[controlId];
+        if(checkBox == "on"){
+            desFolder = path.resolve('download/', clientName); 
+            var stat = fs.statSync(desFolder);
+            if(stat.isDirectory())
+            {
+                //rmdirSync only delete a non empty directory
+                //use wrench instead
+                //https://github.com/ryanmcgrath/wrench-js
+                var wrench = require('wrench'),
+                    util = require('util');
+                wrench.rmdirSyncRecursive(desFolder);         
+            }
         }
     }, this);
-    return directoryList;
-}
 
-//there is an issue for the async readdir method, the return value is never get at once.
-//readdirSync method is used here. 
-function GetAllFiles(path) {
-    var fileList = [];
-    var files = fs.readdirSync(srcPath);
-    files.forEach(function (file) {
-        var statInfo = fs.statSync(path.join(srcPath, file));
-        if (statInfo.isFile()) {
-            fileList.push(file);
-        }
-    }, this);
-    return fileList;
-}
+    res.redirect('Clients');
+});
 
+//process parameter page
 router.post('/process_post', function (req, res) {
     // fetch the info from the web page
     response = {
@@ -167,7 +191,8 @@ router.post('/process_post', function (req, res) {
             "DFA EMRG MKT CORE EQOEFQ",
             "DIVERSIFIED BONDTPQD",
             "GROWTH FUNDTPQE",
-            "INTERNATIONAL INDEXTPQG"],
+            "INTERNATIONAL INDEXTPQG"
+        ],
         FundAllocPct: ["AGGRESSIVE FUNDTPQA _PCT",
             "AGGRESSIVE GROWTH EQTCAG _PCT",
             "BOND INDEXTPQB _PCT",
@@ -177,7 +202,8 @@ router.post('/process_post', function (req, res) {
             "DFA EMRG MKT CORE EQOEFQ _PCT",
             "DIVERSIFIED BONDTPQD _PCT",
             "GROWTH FUNDTPQE _PCT",
-            "INTERNATIONAL INDEXTPQG _PCT"],
+            "INTERNATIONAL INDEXTPQG _PCT"
+        ],
         SingleOrMix: [
             parseInt(req.body.dllAGGRESSIVEFUNDTPQASingleclassormix),
             parseInt(req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclassormix),
@@ -251,4 +277,31 @@ function getDateTime() {
     var sec = date.getSeconds();
     sec = (sec < 10 ? "0" : "") + sec;
     return year + month + day + hour + min + sec;
+}
+
+// Get all the folders based on the path
+function GetAllFolders(srcPath) {
+    var directoryList = [];
+    var files = fs.readdirSync(srcPath);
+    files.forEach(function (file) {
+        var statInfo = fs.statSync(path.join(srcPath, file));
+        if (statInfo.isDirectory()) {
+            directoryList.push(file);
+        }
+    }, this);
+    return directoryList;
+}
+
+//there is an issue for the async readdir method, the return value is never get at once.
+//readdirSync method is used here. 
+function GetAllFiles(srcPath) {
+    var fileList = [];
+    var files = fs.readdirSync(srcPath);
+    files.forEach(function (file) {
+        var statInfo = fs.statSync(path.join(srcPath, file));
+        if (statInfo.isFile()) {
+            fileList.push(file);
+        }
+    }, this);
+    return fileList;
 }

@@ -40,18 +40,20 @@ html
           // main navigation wrapper ends
         
         // header ends
-        .intro-features
-          // intro features panel starts
-          .container
-            .blog-post.layout-2
-              a.button.color.big.round(href='NewClient') Add New Client
-              a.button.color.big.round(href='#') Delete Client
-            each client in clientList
+        form(action='process_deleteclient', method='POST')
+          .intro-features
+            // intro features panel starts
+            .container
               .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink
-                a(href='ClientDetail') #{client}
+                a.button.color.big.round(href='NewClient') Add New Client
+                input.button.color.big.round(type='submit', name='DeleteClient', value='Delete Client')
+                
+                each client in clientList
+                  .blog-post.layout-2
+                  div(style='float: left;width:20px')
+                    input(name='chb_'+client)(type='checkbox')
+                  .permalink  
+                    a(href='ClientDetail') #{client} 
 
       // intro features panel ends
       section#copyrights
@@ -61,5 +63,3 @@ html
               | © 2016 Mercer LLC, All Rights Reserved.
     // main wrapp starts
     // main container ends
-
-
