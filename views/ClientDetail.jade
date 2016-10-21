@@ -37,7 +37,7 @@ html
               // main navigation ends
               .after-nav-info
                 h4 Li, Qiao
-          // main navigation wrapper ends
+            // main navigation wrapper ends
         // header ends
         #breadcrumb
           .container
@@ -46,7 +46,7 @@ html
             .one-half
               a.button.color.big.round(href='Parameter?clientName='+ClientName) Create New Job
               // breadcrumb nav ends
-        form(action='process_deleteEmployeeData', method='POST')
+        form(action='/process_deleteData?fileType=EmployeeData&clientName='+ClientName, method='POST')
           .intro-features
             // intro features panel starts
             .container
@@ -57,12 +57,12 @@ html
                 each employeeData in EmployeeDataList
                   .blog-post.layout-2
                   div(style='float: left;width:20px')
-                    input(name='chb_'+employeeData)(type='checkbox')
+                    input(name='chb_'+employeeData, type='checkbox')
                   h4 #{employeeData} 
-
+                  
 
         // intro features panel ends
-        form(action='process_deleteDBResult', method='POST')
+        form(action='/process_deleteData?fileType=DBResult&clientName='+ClientName, method='POST')
           .intro-features
             // intro features panel starts
             .container
@@ -73,7 +73,7 @@ html
                 each dbResult in DBResultList
                   .blog-post.layout-2
                   div(style='float: left;width:20px')
-                    input(name='chb_'+dbResult)(type='checkbox')
+                    input(name='chb_'+dbResult, type='checkbox')
                   h4 #{dbResult} 
           // intro features panel ends
         section#copyrights

@@ -39,12 +39,14 @@ html
                 h4 Li, Qiao
           // main navigation wrapper ends
         // header ends
-        form(action='fileUpdateload_EmployeeData?clientName='+clientName, method='POST')
+
+        form(action='/fileUpload?fileType=EmployeeData&clientName='+clientName, method='post', enctype='multipart/form-data')
           .intro-features
-            // intro features panel starts
-            .container
-              input(type='file', name='metadataFile', size='50', enctype="multipart/form-data")
-              input.button.color.big.round(type='submit', name='uploadFile', value='Upload')
+          // intro features panel starts
+          .container
+            input(type='file', name='image', size='50')
+            input.button.color.big.round(type='submit', value='Upload')
+
       // intro features panel ends
       section#copyrights
         section.container

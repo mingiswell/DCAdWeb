@@ -39,12 +39,12 @@ html
                 h4 Li, Qiao
           // main navigation wrapper ends
         // header ends
-        .intro-features
+        form(action='/fileUpload?fileType=DBResult&clientName='+clientName, method='post', enctype='multipart/form-data')
+          .intro-features
           // intro features panel starts
           .container
-            input(type='file', name='metadataFile', size='50')
-            input.button.color.small.round(type='submit', value='upload')
-            a.button.color.small.round(href='ClientDetail') OK
+            input(type='file', name='image', size='50')
+            input.button.color.big.round(type='submit', value='Upload')
       // intro features panel ends
       section#copyrights
         section.container

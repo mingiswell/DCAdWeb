@@ -1,316 +1,349 @@
-var express = require('express');
-// var router = express.Router();
-var app = express();
-var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
-var multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
 
-//
-app.get('/', function (req, res, next) {
-    res.render('index', { title: 'Express' });
-});
+module.exports = function (app) {
+    app.get('/', function (req, res) {
+        res.render('index', { title: 'Express' });
+    });
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-    res.render('index', { title: 'Express' });
-});
-router.get('/index', function (req, res, next) {
-    res.render('index', { title: 'Express' });
-});
+    /* GET home page. */
+    app.get('/', function (req, res, next) {
+        res.render('index', { title: 'Express' });
+    });
+    app.get('/index', function (req, res, next) {
+        res.render('index', { title: 'Express' });
+    });
 
-/* GET Clients page. */
-router.get('/Clients', function (req, res, next) {
-    var clientPath = path.resolve('download');
-    var clientList = GetAllFolders(clientPath);
-    res.render('Clients', { 'clientList': clientList });
-});
+    /* GET Clients page. */
+    app.get('/Clients', function (req, res, next) {
+        var path = require('path');
+        var clientPath = path.resolve('download');
+        var clientList = GetAllFolders(clientPath);
+        res.render('Clients', { 'clientList': clientList });
+    });
 
-/* GET Client Detail page. */
-router.get('/ClientDetail', function (req, res, next) {
-    var clientName = req.query.clientName;
-    var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
-    var DBResultList = GetAllFiles(DBResultPath);
-    var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
-    var EmployeeDataList = GetAllFiles(EmployeeDataPath);
-    res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList});
-});
+    /* GET MetaData page. */
+    app.get('/MetaData', function (req, res, next) {
+        res.render('MetaData');
+    });
 
-/* GET MetaData page. */
-router.get('/MetaData', function (req, res, next) {
-    res.render('MetaData');
-});
+    /* GET New Client page. */
+    app.get('/NewClient', function (req, res, next) {
+        res.render('NewClient');
+    });
 
-/* GET New Client page. */
-router.get('/NewClient', function (req, res, next) {
-    res.render('NewClient');
-});
+    /* GET New Jobs page. */
+    app.get('/Jobs', function (req, res, next) {
+        res.render('Jobs');
+    });
 
-/* GET New Jobs page. */
-router.get('/Jobs', function (req, res, next) {
-    res.render('Jobs');
-});
+    // Get parameter page.
+    app.get('/parameter', function (req, res, next) {
+        var employeeDataPath = path.resolve('download/clientA/EmployeeData');
+        var dbResultPath = path.resolve('download/clientA/DBResult');
+        var employeeDataList = GetAllFiles(employeeDataPath);
+        var dbResultList = GetAllFiles(dbResultPath);
+        res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
+    });
 
-/* GET New DB Result page. */
-router.get('/NewDBResult', function (req, res, next) {
-    res.render('NewDBResult');
-});
+    //Add new client and its subfolders (DBResult and EmployeeData) 
+    //and return to ClientDetail page
+    app.post('/process_addclient', function (req, res) {
+        var newClientName = req.body.name;
 
-/* GET New DB Result page. */
-router.get('/NewEmployeeData', function (req, res, next) {
-    var clientName = req.query.clientName;
-    res.render('NewEmployeeData', {'clientName': clientName});
-});
+        // Create Job folder
+        var path = require('path');
+        desFolder = path.resolve('download/', newClientName);
+        fs.mkdirSync(desFolder, 0755);
 
-// Get parameter page.
-router.get('/parameter', function (req, res, next) {
-    var employeeDataPath = path.resolve('download/clientA/EmployeeData');
-    var dbResultPath = path.resolve('download/clientA/DBResult');
-    var employeeDataList = GetAllFiles(employeeDataPath);
-    var dbResultList = GetAllFiles(dbResultPath);
-    res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
-});
+        // Create DBResult folder under Job Folder
+        var path = require('path');
+        desFolder = path.resolve('download/' + newClientName + '/DBResult');
+        fs.mkdirSync(desFolder, 0755);
 
-//Add new client and its subfolders (DBResult and EmployeeData) 
-//and return to ClientDetail page
-router.post('/process_addclient', function (req, res) {
-    var newClientName = req.body.name;
+        //Create EmployeeData folder under Job Folder
+        var path = require('path');
+        desFolder = path.resolve('download/' + newClientName + '/EmployeeData');
+        fs.mkdirSync(desFolder, 0755);
 
-    // Create Job folder
-    var path = require('path');
-    desFolder = path.resolve('download/', newClientName);
-    fs.mkdirSync(desFolder, 0755);
+        res.redirect('Clients');
+    });
 
-    // Create DBResult folder under Job Folder
-    var path = require('path');
-    desFolder = path.resolve('download/' + newClientName + '/DBResult');
-    fs.mkdirSync(desFolder, 0755);
+    /* GET Client Detail page. */
+    app.get('/ClientDetail', function (req, res, next) {
+        var clientName = req.query.clientName;
+        var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+        var DBResultList = GetAllFiles(DBResultPath);
+        var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+        var EmployeeDataList = GetAllFiles(EmployeeDataPath);
+        res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
+    });
 
-    //Create EmployeeData folder under Job Folder
-    var path = require('path');
-    desFolder = path.resolve('download/' + newClientName + '/EmployeeData');
-    fs.mkdirSync(desFolder, 0755);
-
-    res.redirect('Clients');
-});
-
-//delete the selected EmployeeData
-router.post('/process_deleteEmployeeData', function (req, res) {
-    console.log('delete employee data');
-    res.redirect('ClientDetail');
-});
-
-//delete the selected DBResult
-router.post('/process_deleteDBResult', function(req,res){
-    console.log('delete db result');
-    res.redirect('ClientDetail');
-});
-
-//delete the selected client
-router.post('/process_deleteclient', function (req, res) {
-    var clientPath = path.resolve('download');
-    var clientList = GetAllFolders(clientPath);
-    var clientToBeDeletedList = [];
-
-    clientList.forEach(function (clientName) {
-        controlId = 'chb_' + clientName;
-        var checkBox = req.body[controlId];
-        if(checkBox == "on"){
-            desFolder = path.resolve('download/', clientName); 
-            var stat = fs.statSync(desFolder);
-            if(stat.isDirectory())
-            {
-                //rmdirSync only delete a non empty directory
-                //use wrench instead
-                //https://github.com/ryanmcgrath/wrench-js
-                var wrench = require('wrench'),
-                    util = require('util');
-                wrench.rmdirSyncRecursive(desFolder);         
+    //In the ClientDetail
+    //delete the selected EmployeeData
+    app.post('/process_deleteData', function (req, res) {
+        var clientName = req.query.clientName;
+        var fileType = req.query.fileType;
+        var dataPath = path.resolve('download/' + clientName + '/' + fileType + '/');
+        var fileList = GetAllFiles(dataPath); 
+        fileList.forEach(function(file) {
+            var chbFile = req.body['chb_' + file];
+            if(chbFile == "on"){
+                desFile = path.resolve(dataPath, file);
+                fs.unlink(desFile, function(err){
+                    if(err){
+                        console.error(err.message);
+                    }
+                    console.log('delete file successfully!');
+                });
             }
+        }, this);
+
+        var clientName = req.query.clientName;
+        var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+        var DBResultList = GetAllFiles(DBResultPath);
+        var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+        var EmployeeDataList = GetAllFiles(EmployeeDataPath);
+        res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
+
+    });
+
+    //delete the selected DBResult
+    app.post('/process_deleteDBResult', function (req, res) {
+        console.log('delete db result');
+        res.redirect('ClientDetail');
+    });
+
+    //delete the selected client
+    app.post('/process_deleteclient', function (req, res) {
+        var clientPath = path.resolve('download');
+        var clientList = GetAllFolders(clientPath);
+        var clientToBeDeletedList = [];
+
+        clientList.forEach(function (clientName) {
+            controlId = 'chb_' + clientName;
+            var chbClientName = req.body[controlId];
+            if (chbClientName == "on") {
+                desFolder = path.resolve('download/', clientName);
+                var stat = fs.statSync(desFolder);
+                if (stat.isDirectory()) {
+                    //rmdirSync only delete a non empty directory
+                    //use wrench instead
+                    //https://github.com/ryanmcgrath/wrench-js
+                    var wrench = require('wrench'),
+                        util = require('util');
+                    wrench.rmdirSyncRecursive(desFolder);
+                }
+            }
+        }, this);
+        res.redirect('Clients');
+    });
+
+    /* GET New DB Result page. */
+    app.get('/NewEmployeeData', function (req, res, next) {
+        var clientName = req.query.clientName;
+        res.render('NewEmployeeData', { 'clientName': clientName });
+    });
+
+    /* GET New DB Result page. */
+    app.get('/NewDBResult', function (req, res, next) {
+        var clientName = req.query.clientName;
+        res.render('NewDBResult', { 'clientName': clientName });
+    });
+
+    /* file upload in NewEmployeeData and NewDBResult*/
+    app.post('/fileUpload', function (req, res) {
+        var clientName = req.query.clientName;
+        var fileType = req.query.fileType;
+        var des_file;
+        if (fileType == "MetaData"){
+            des_file = path.resolve('download/' + req.files[0].originalname);
         }
-    }, this);
+        else{
+            des_file = path.resolve('download/' + clientName + '/' + fileType + '/' + req.files[0].originalname);
+        }
+        // __dirname + "/" + req.files[0].originalname;
+        console.log(des_file);
+        fs.readFile(req.files[0].path, function (err, data) {
+            fs.writeFile(des_file, data, function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    response = {
+                        message: 'File uploaded successfully',
+                        filename: req.files[0].originalname
+                    };
+                }
+                
+                if (fileType == "MetaData") {
+                    res.redirect('MetaData');
+                }
+                else{
+                    var clientName = req.query.clientName;
+                    var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+                    var DBResultList = GetAllFiles(DBResultPath);
+                    var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+                    var EmployeeDataList = GetAllFiles(EmployeeDataPath);
+                    res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
+                }
+            });
+        });
+    })
 
-    res.redirect('Clients');
-});
+    //process parameter page
+    app.post('/process_post', function (req, res) {
+        // fetch the info from the web page
+        response = {
+            CensusDate: req.body.txtCensusDate,
+            ProjectType: req.body.dllProjectType,
+            EmployeeData: req.body.dllEmployeeData,
+            ImportDBResults: Boolean(req.body.dllImportDBResults),
+            DBResult: req.body.dllDBResult,
+            OutputFile: req.body.txtOutputFile,
+            Notes: req.body.txtNotes,
+            PopulationToBeRun: req.body.dllPopulationtobeRun,
+            NumbOfEEsToRun: parseInt(req.body.txtNoofParticipants),
+            StartFromRow: parseInt(req.body.txtStartwithRow),
+            EEID1: parseInt(req.body.txttableTestCases1),
+            EEID2: parseInt(req.body.txttableTestCases2),
+            EEID3: parseInt(req.body.txttableTestCases3),
+            EEID4: parseInt(req.body.txttableTestCases4),
+            EEID5: parseInt(req.body.txttableTestCases5),
+            EEID6: parseInt(req.body.txttableTestCases6),
+            EEID7: parseInt(req.body.txttableTestCases7),
+            EEID8: parseInt(req.body.txttableTestCases8),
+            EEID9: parseInt(req.body.txttableTestCases9),
+            EEID10: parseInt(req.body.txttableTestCases10),
+            TrialToBeRun: req.body.dllTrialtobeRun,
+            TestTrialNumber: parseInt(req.body.txtTesttrialnumber),
+            StartAge: parseInt(req.body.txtStartAge),
+            EndAge: parseInt(req.body.txtEndAge),
+            PayIncreaseType: req.body.dllPayIncreaseType,
+            PayRelatedAssumptions: {
+                "Fixed Increase": { "Pay Group 1": parseFloat(req.body.txtPayGroup1FixedIncrease), "Pay Group 2": req.body.txtPayGroup2FixedIncrease, "Pay Group 3": req.body.txtPayGroup3FixedIncrease },
+                "Age related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Agerelatedtable), "Pay Group 2": req.body.dllPayGroup2Agerelatedtable, "Pay Group 3": req.body.dllPayGroup3Agerelatedtable },
+                "Service related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Servicerelatedtable), "Pay Group 2": req.body.dllPayGroup2Servicerelatedtable, "Pay Group 3": req.body.dllPayGroup3Servicerelatedtable }
+            },
+            TableBonusPctTarget: { "Pay Group 1": parseFloat(req.body.txtPayGroup1BonusasaPecentofTarget), "Pay Group 2": parseFloat(req.body.txtPayGroup2BonusasaPecentofTarget), "Pay Group 3": parseFloat(req.body.txtPayGroup3BonusasaPecentofTarget) },
+            AdjForInflation: Boolean(req.body.dllAdjustedforInflation),
+            BaselineInflationForadj: parseFloat(req.body.txtBaselineinflationforadj),
+            MinPayInc: parseInt(req.body.txtMinimumIncrease),
+            TaxRatePreRet: parseFloat(req.body.txtPreRetirement),
+            TaxRatePostRet: parseFloat(req.body.txtPostRetirement),
+            ProrateForShortSvc: Boolean(req.body.dllProrateTargetforShortSvc),
+            YrsForFullTarget: parseInt(req.body.txtNoofYearsforFullTarget),
+            StartingAgeForProratePeriod: parseInt(req.body.txtStartingageforprorateperiod),
+            CustomPercentile: parseFloat(req.body.txtCustomPercentiletoincludeinoutput),
+            CovStopAge: parseInt(req.body.txtStopAgeforpostretirementbenefits),
+            PVIntRate: parseFloat(req.body.txtInterestratetocalculatePV),
+            PSPercentage: parseFloat(req.body.txtProfitSharingpercentage),
+            PSIncludeBonus: Boolean(req.body.dllIncludeBonusinProfitSharingpay),
+            PSMinService: parseInt(req.body.txtMinimumserviceforPSeligibility),
+            PSPOYInt: parseFloat(req.body.txtPortionofyearinterestforannualcontribution),
+            IncludeBonus401K: Boolean(req.body.dllIncludeBonusin401pay),
+            MinPreTaxDefRate: parseFloat(req.body.txtMinimumdeferralrate),
+            MaxPreTaxDefRate: parseFloat(req.body.txtMaximumdeferralrate),
+            AllowCatchUp: Boolean(req.body.dllAllowCatchupcontributions),
+            AutoEscalation: Boolean(req.body.dllAutoescalation),
+            AutoEscalationAnnualIncrease: parseFloat(req.body.txtAnnualIncrease),
+            AutoEscalationMax: parseFloat(req.body.txtMaximumAutoescalation),
+            MatchTableNum1: req.body.dllRatetableforfirstx,
+            MatchPayPct1: parseFloat(req.body.txtPercentageofpay),
+            MatchTableNum2: req.body.dllRatetablefornexty,
+            MatchPayPct2: parseFloat(req.body.txtPercentageofadditionalpay),
+            IncludeATContForMatch: Boolean(req.body.dllIncludeAftertaxcontributions),
+            MaxMatchPctOfPay: parseFloat(req.body.txtMaxoverallmatchasapercentageofpay),
+            MaxMatchDollar: parseInt(req.body.txtMaximumdollarmatch),
+            MaxMatchDollarIncludeInflation: Boolean(req.body.dllAdjustmaximumdollarmatchforinflation),
+            AdjForPRM: Boolean(req.body.dllAdjustformedicalexpenses),
+            RetMedPreRetCost: Boolean(req.body.txtPreretirementmedicalexpenses),
+            RetMedPre65GrossCost: parseInt(req.body.txtPostretirementmedicalexpensesPre65),
+            RetMedPost65GrossCost: parseInt(req.body.txtPostretirementmedicalexpensesPost65),
+            SocSecCOLA: parseFloat(req.body.txtSocialSecurityCOLAAssumption),
+            WageBaseInc: parseFloat(req.body.txtWageBaseIncreaseAssumption),
+            SSPIAStartAge: parseInt(req.body.txtSocialSecurityPIACommencementAge),
+            PIAHistSS: parseFloat(req.body.txtHistoricalPayScale),
+            FundAlloc: ["AGGRESSIVE FUNDTPQA",
+                "AGGRESSIVE GROWTH EQTCAG",
+                "BOND INDEXTPQB",
+                "BROKERAGELINKBLNK",
+                "CAPITAL PRESERVATIONGCTI",
+                "CONSERVATIVE FUNDTPQC",
+                "DFA EMRG MKT CORE EQOEFQ",
+                "DIVERSIFIED BONDTPQD",
+                "GROWTH FUNDTPQE",
+                "INTERNATIONAL INDEXTPQG"
+            ],
+            FundAllocPct: ["AGGRESSIVE FUNDTPQA _PCT",
+                "AGGRESSIVE GROWTH EQTCAG _PCT",
+                "BOND INDEXTPQB _PCT",
+                "BROKERAGELINKBLNK _PCT",
+                "CAPITAL PRESERVATIONGCTI _PCT",
+                "CONSERVATIVE FUNDTPQC _PCT",
+                "DFA EMRG MKT CORE EQOEFQ _PCT",
+                "DIVERSIFIED BONDTPQD _PCT",
+                "GROWTH FUNDTPQE _PCT",
+                "INTERNATIONAL INDEXTPQG _PCT"
+            ],
+            SingleOrMix: [
+                parseInt(req.body.dllAGGRESSIVEFUNDTPQASingleclassormix),
+                parseInt(req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclassormix),
+                parseInt(req.body.dllBONDINDEXTPQBSingleclassormix),
+                parseInt(req.body.dllBROKERAGELINKBLNKSingleclassormix),
+                parseInt(req.body.dllCAPITALPRESERVATIONGCTISingleclassormix),
+                parseInt(req.body.dllCONSERVATIVEFUNDTPQCSingleclassormix),
+                parseInt(req.body.dllDFAEMRGMKTCOREEQOEFQSingleclassormix),
+                parseInt(req.body.dllDIVERSIFIEDBONDTPQDSingleclassormix),
+                parseInt(req.body.dllGROWTHFUNDTPQESingleclassormix),
+                parseInt(req.body.dllINTERNATIONALINDEXTPQGSingleclassormix)
+            ],
+            RebalanceValues: [
+                parseInt(req.body.txtAGGRESSIVEFUNDTPQA),
+                parseInt(req.body.txtAGGRESSIVEGROWTHEQTCAG),
+                parseInt(req.body.txtBONDINDEXTPQB),
+                parseInt(req.body.txtBROKERAGELINKBLNK),
+                parseInt(req.body.txtCAPITALPRESERVATIONGCTI),
+                parseInt(req.body.txtCONSERVATIVEFUNDTPQC),
+                parseInt(req.body.txtDFAEMRGMKTCOREEQOEFQ),
+                parseInt(req.body.txtDIVERSIFIEDBONDTPQD),
+                parseInt(req.body.txtGROWTHFUNDTPQE),
+                parseInt(req.body.txtINTERNATIONALINDEXTPQG)
+            ],
+            Class: [
+                req.body.dllAGGRESSIVEFUNDTPQASingleclass,
+                req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclass,
+                req.body.dllBONDINDEXTPQBSingleclass,
+                req.body.dllBROKERAGELINKBLNKSingleclass,
+                req.body.dllCAPITALPRESERVATIONGCTISingleclass,
+                req.body.dllCONSERVATIVEFUNDTPQCSingleclass,
+                req.body.dllDFAEMRGMKTCOREEQOEFQSingleclass,
+                req.body.dllDIVERSIFIEDBONDTPQDSingleclass,
+                req.body.dllGROWTHFUNDTPQESingleclass,
+                req.body.dllINTERNATIONALINDEXTPQGSingleclass
+            ],
+            Rebalance: Boolean(req.body.dllRebalanceattheendofeachyear),
+            MixedFundType: req.body.dllMixedFundClassallocations,
+            UseCurrentMix: Boolean(req.body.dllUseCurrentMixforfuturecontributions),
+        };
 
-//Upload EmployeeData
-//Todo: req.files is undefined
-router.post('/fileUpdateload_EmployeeData', upload.single('file'), function (req, res) {
-    // res.redirect('ClientDetail');
-    var clientName = req.query.clientName;
-    var des_file = __dirname + "/" + req.files[0].originalname;
-    fs.readFile(req.files[0].path, function (err, data) {
-        fs.writeFile(des_file, data, function (err) {
+        // Create Job folder
+        var path = require('path');
+        var jobName = "job_" + getDateTime();
+        var clientName = req.query.clientName;
+        desFolder = path.resolve('download/' + clientName + '/' + jobName);
+        fs.mkdirSync(desFolder, 0755);
+        var desFile = desFolder + "/parameter.json";
+        console.log(desFile);
+
+        // write to json file
+        fs.writeFile(desFile, JSON.stringify(response, null, ' '), function (err) {
             if (err) {
                 console.log(err);
-            } else {
-                response = {
-                    message: 'File uploaded successfully',
-                    filename: req.files[0].originalname
-                };
             }
-            console.log(response);
             res.end(JSON.stringify(response));
         });
     });
-});
-
-
-//process parameter page
-router.post('/process_post', function (req, res) {
-    // fetch the info from the web page
-    response = {
-        CensusDate: req.body.txtCensusDate,
-        ProjectType: req.body.dllProjectType,
-        EmployeeData: req.body.dllEmployeeData,
-        ImportDBResults: Boolean(req.body.dllImportDBResults),
-        DBResult: req.body.dllDBResult,
-        OutputFile: req.body.txtOutputFile,
-        Notes: req.body.txtNotes,
-        PopulationToBeRun: req.body.dllPopulationtobeRun,
-        NumbOfEEsToRun: parseInt(req.body.txtNoofParticipants),
-        StartFromRow: parseInt(req.body.txtStartwithRow),
-        EEID1: parseInt(req.body.txttableTestCases1),
-        EEID2: parseInt(req.body.txttableTestCases2),
-        EEID3: parseInt(req.body.txttableTestCases3),
-        EEID4: parseInt(req.body.txttableTestCases4),
-        EEID5: parseInt(req.body.txttableTestCases5),
-        EEID6: parseInt(req.body.txttableTestCases6),
-        EEID7: parseInt(req.body.txttableTestCases7),
-        EEID8: parseInt(req.body.txttableTestCases8),
-        EEID9: parseInt(req.body.txttableTestCases9),
-        EEID10: parseInt(req.body.txttableTestCases10),
-        TrialToBeRun: req.body.dllTrialtobeRun,
-        TestTrialNumber: parseInt(req.body.txtTesttrialnumber),
-        StartAge: parseInt(req.body.txtStartAge),
-        EndAge: parseInt(req.body.txtEndAge),
-        PayIncreaseType: req.body.dllPayIncreaseType,
-        PayRelatedAssumptions: {
-            "Fixed Increase": { "Pay Group 1": parseFloat(req.body.txtPayGroup1FixedIncrease), "Pay Group 2": req.body.txtPayGroup2FixedIncrease, "Pay Group 3": req.body.txtPayGroup3FixedIncrease },
-            "Age related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Agerelatedtable), "Pay Group 2": req.body.dllPayGroup2Agerelatedtable, "Pay Group 3": req.body.dllPayGroup3Agerelatedtable },
-            "Service related table": { "Pay Group 1": parseFloat(req.body.dllPayGroup1Servicerelatedtable), "Pay Group 2": req.body.dllPayGroup2Servicerelatedtable, "Pay Group 3": req.body.dllPayGroup3Servicerelatedtable }
-        },
-        TableBonusPctTarget: { "Pay Group 1": parseFloat(req.body.txtPayGroup1BonusasaPecentofTarget), "Pay Group 2": parseFloat(req.body.txtPayGroup2BonusasaPecentofTarget), "Pay Group 3": parseFloat(req.body.txtPayGroup3BonusasaPecentofTarget) },
-        AdjForInflation: Boolean(req.body.dllAdjustedforInflation),
-        BaselineInflationForadj: parseFloat(req.body.txtBaselineinflationforadj),
-        MinPayInc: parseInt(req.body.txtMinimumIncrease),
-        TaxRatePreRet: parseFloat(req.body.txtPreRetirement),
-        TaxRatePostRet: parseFloat(req.body.txtPostRetirement),
-        ProrateForShortSvc: Boolean(req.body.dllProrateTargetforShortSvc),
-        YrsForFullTarget: parseInt(req.body.txtNoofYearsforFullTarget),
-        StartingAgeForProratePeriod: parseInt(req.body.txtStartingageforprorateperiod),
-        CustomPercentile: parseFloat(req.body.txtCustomPercentiletoincludeinoutput),
-        CovStopAge: parseInt(req.body.txtStopAgeforpostretirementbenefits),
-        PVIntRate: parseFloat(req.body.txtInterestratetocalculatePV),
-        PSPercentage: parseFloat(req.body.txtProfitSharingpercentage),
-        PSIncludeBonus: Boolean(req.body.dllIncludeBonusinProfitSharingpay),
-        PSMinService: parseInt(req.body.txtMinimumserviceforPSeligibility),
-        PSPOYInt: parseFloat(req.body.txtPortionofyearinterestforannualcontribution),
-        IncludeBonus401K: Boolean(req.body.dllIncludeBonusin401pay),
-        MinPreTaxDefRate: parseFloat(req.body.txtMinimumdeferralrate),
-        MaxPreTaxDefRate: parseFloat(req.body.txtMaximumdeferralrate),
-        AllowCatchUp: Boolean(req.body.dllAllowCatchupcontributions),
-        AutoEscalation: Boolean(req.body.dllAutoescalation),
-        AutoEscalationAnnualIncrease: parseFloat(req.body.txtAnnualIncrease),
-        AutoEscalationMax: parseFloat(req.body.txtMaximumAutoescalation),
-        MatchTableNum1: req.body.dllRatetableforfirstx,
-        MatchPayPct1: parseFloat(req.body.txtPercentageofpay),
-        MatchTableNum2: req.body.dllRatetablefornexty,
-        MatchPayPct2: parseFloat(req.body.txtPercentageofadditionalpay),
-        IncludeATContForMatch: Boolean(req.body.dllIncludeAftertaxcontributions),
-        MaxMatchPctOfPay: parseFloat(req.body.txtMaxoverallmatchasapercentageofpay),
-        MaxMatchDollar: parseInt(req.body.txtMaximumdollarmatch),
-        MaxMatchDollarIncludeInflation: Boolean(req.body.dllAdjustmaximumdollarmatchforinflation),
-        AdjForPRM: Boolean(req.body.dllAdjustformedicalexpenses),
-        RetMedPreRetCost: Boolean(req.body.txtPreretirementmedicalexpenses),
-        RetMedPre65GrossCost: parseInt(req.body.txtPostretirementmedicalexpensesPre65),
-        RetMedPost65GrossCost: parseInt(req.body.txtPostretirementmedicalexpensesPost65),
-        SocSecCOLA: parseFloat(req.body.txtSocialSecurityCOLAAssumption),
-        WageBaseInc: parseFloat(req.body.txtWageBaseIncreaseAssumption),
-        SSPIAStartAge: parseInt(req.body.txtSocialSecurityPIACommencementAge),
-        PIAHistSS: parseFloat(req.body.txtHistoricalPayScale),
-        FundAlloc: ["AGGRESSIVE FUNDTPQA",
-            "AGGRESSIVE GROWTH EQTCAG",
-            "BOND INDEXTPQB",
-            "BROKERAGELINKBLNK",
-            "CAPITAL PRESERVATIONGCTI",
-            "CONSERVATIVE FUNDTPQC",
-            "DFA EMRG MKT CORE EQOEFQ",
-            "DIVERSIFIED BONDTPQD",
-            "GROWTH FUNDTPQE",
-            "INTERNATIONAL INDEXTPQG"
-        ],
-        FundAllocPct: ["AGGRESSIVE FUNDTPQA _PCT",
-            "AGGRESSIVE GROWTH EQTCAG _PCT",
-            "BOND INDEXTPQB _PCT",
-            "BROKERAGELINKBLNK _PCT",
-            "CAPITAL PRESERVATIONGCTI _PCT",
-            "CONSERVATIVE FUNDTPQC _PCT",
-            "DFA EMRG MKT CORE EQOEFQ _PCT",
-            "DIVERSIFIED BONDTPQD _PCT",
-            "GROWTH FUNDTPQE _PCT",
-            "INTERNATIONAL INDEXTPQG _PCT"
-        ],
-        SingleOrMix: [
-            parseInt(req.body.dllAGGRESSIVEFUNDTPQASingleclassormix),
-            parseInt(req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclassormix),
-            parseInt(req.body.dllBONDINDEXTPQBSingleclassormix),
-            parseInt(req.body.dllBROKERAGELINKBLNKSingleclassormix),
-            parseInt(req.body.dllCAPITALPRESERVATIONGCTISingleclassormix),
-            parseInt(req.body.dllCONSERVATIVEFUNDTPQCSingleclassormix),
-            parseInt(req.body.dllDFAEMRGMKTCOREEQOEFQSingleclassormix),
-            parseInt(req.body.dllDIVERSIFIEDBONDTPQDSingleclassormix),
-            parseInt(req.body.dllGROWTHFUNDTPQESingleclassormix),
-            parseInt(req.body.dllINTERNATIONALINDEXTPQGSingleclassormix)
-        ],
-        RebalanceValues: [
-            parseInt(req.body.txtAGGRESSIVEFUNDTPQA),
-            parseInt(req.body.txtAGGRESSIVEGROWTHEQTCAG),
-            parseInt(req.body.txtBONDINDEXTPQB),
-            parseInt(req.body.txtBROKERAGELINKBLNK),
-            parseInt(req.body.txtCAPITALPRESERVATIONGCTI),
-            parseInt(req.body.txtCONSERVATIVEFUNDTPQC),
-            parseInt(req.body.txtDFAEMRGMKTCOREEQOEFQ),
-            parseInt(req.body.txtDIVERSIFIEDBONDTPQD),
-            parseInt(req.body.txtGROWTHFUNDTPQE),
-            parseInt(req.body.txtINTERNATIONALINDEXTPQG)
-        ],
-        Class: [
-            req.body.dllAGGRESSIVEFUNDTPQASingleclass,
-            req.body.dllAGGRESSIVEGROWTHEQTCAGSingleclass,
-            req.body.dllBONDINDEXTPQBSingleclass,
-            req.body.dllBROKERAGELINKBLNKSingleclass,
-            req.body.dllCAPITALPRESERVATIONGCTISingleclass,
-            req.body.dllCONSERVATIVEFUNDTPQCSingleclass,
-            req.body.dllDFAEMRGMKTCOREEQOEFQSingleclass,
-            req.body.dllDIVERSIFIEDBONDTPQDSingleclass,
-            req.body.dllGROWTHFUNDTPQESingleclass,
-            req.body.dllINTERNATIONALINDEXTPQGSingleclass
-        ],
-        Rebalance: Boolean(req.body.dllRebalanceattheendofeachyear),
-        MixedFundType: req.body.dllMixedFundClassallocations,
-        UseCurrentMix: Boolean(req.body.dllUseCurrentMixforfuturecontributions),
-    };
-
-    // Create Job folder
-    var path = require('path');
-    var jobName = "job_" + getDateTime();
-    var clientName = req.query.clientName;
-    desFolder = path.resolve('download/' + clientName + '/' + jobName);
-    fs.mkdirSync(desFolder, 0755);
-    var desFile = desFolder + "/parameter.json";
-    console.log(desFile);
-
-    // write to json file
-    fs.writeFile(desFile, JSON.stringify(response, null, ' '), function (err) {
-        if (err) {
-            console.log(err);
-        }
-        res.end(JSON.stringify(response));
-    });
-});
-module.exports = router;
+};
 
 function getDateTime() {
     var date = new Date();
