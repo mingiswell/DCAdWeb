@@ -42,48 +42,40 @@ html
         #breadcrumb
           .container
             .one-half
-              h4 Client Detail:
+              h4 Client Detail: #{ClientName}
             .one-half
-              a.button.color.big.round(href='Parameter') Create New Job
+              a.button.color.big.round(href='Parameter?clientName='+ClientName) Create New Job
               // breadcrumb nav ends
-        .intro-features
-          // intro features panel starts
-          .container
-            .blog-post.layout-2
-              a.button.color.big.round(href='NewEmployeeData') Add EmployeeData
-              a.button.color.big.round(href='#') Delete EmployeeData
-            .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink EmployeeData1
-            .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink EmployeeData2
-            .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink EmployeeData3
+        form(action='process_deleteEmployeeData', method='POST')
+          .intro-features
+            // intro features panel starts
+            .container
+              .blog-post.layout-2
+                a.button.color.big.round(href='NewEmployeeData?clientName='+ClientName) Add EmployeeData
+                input.button.color.big.round(type='submit', name='DeleteEmployeeData', value='Delete Employee Data')
+              
+                each employeeData in EmployeeDataList
+                  .blog-post.layout-2
+                  div(style='float: left;width:20px')
+                    input(name='chb_'+employeeData)(type='checkbox')
+                  h4 #{employeeData} 
+
+
         // intro features panel ends
-        .intro-features
-          // intro features panel starts
-          .container
-            .blog-post.layout-2
-              a.button.color.big.round(href='NewDBResult') Add DB Result
-              a.button.color.big.round(href='#') Delete DB Result
-            .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink DB Result 1
-            .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink DB Result 2
-            .blog-post.layout-2
-              div(style='float: left;width:20px')
-                input(type='checkbox')
-              .permalink DB Result 3
-        // intro features panel ends
+        form(action='process_deleteDBResult', method='POST')
+          .intro-features
+            // intro features panel starts
+            .container
+              .blog-post.layout-2
+                a.button.color.big.round(href='NewDBResult?clientName='+ClientName) Add DB Result
+                input.button.color.big.round(type='submit', name='DeleteDBResult', value='Delete DB Result')
+              
+                each dbResult in DBResultList
+                  .blog-post.layout-2
+                  div(style='float: left;width:20px')
+                    input(name='chb_'+dbResult)(type='checkbox')
+                  h4 #{dbResult} 
+          // intro features panel ends
         section#copyrights
           section.container
             .one-half

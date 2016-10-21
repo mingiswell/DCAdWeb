@@ -1,9 +1,16 @@
 var express = require('express');
-var router = express.Router();
+// var router = express.Router();
 var app = express();
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' });
+
+//
+app.get('/', function (req, res, next) {
+    res.render('index', { title: 'Express' });
+});
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -22,7 +29,12 @@ router.get('/Clients', function (req, res, next) {
 
 /* GET Client Detail page. */
 router.get('/ClientDetail', function (req, res, next) {
-    res.render('ClientDetail');
+    var clientName = req.query.clientName;
+    var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+    var DBResultList = GetAllFiles(DBResultPath);
+    var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+    var EmployeeDataList = GetAllFiles(EmployeeDataPath);
+    res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList});
 });
 
 /* GET MetaData page. */
@@ -47,7 +59,8 @@ router.get('/NewDBResult', function (req, res, next) {
 
 /* GET New DB Result page. */
 router.get('/NewEmployeeData', function (req, res, next) {
-    res.render('NewEmployeeData');
+    var clientName = req.query.clientName;
+    res.render('NewEmployeeData', {'clientName': clientName});
 });
 
 // Get parameter page.
@@ -82,6 +95,18 @@ router.post('/process_addclient', function (req, res) {
     res.redirect('Clients');
 });
 
+//delete the selected EmployeeData
+router.post('/process_deleteEmployeeData', function (req, res) {
+    console.log('delete employee data');
+    res.redirect('ClientDetail');
+});
+
+//delete the selected DBResult
+router.post('/process_deleteDBResult', function(req,res){
+    console.log('delete db result');
+    res.redirect('ClientDetail');
+});
+
 //delete the selected client
 router.post('/process_deleteclient', function (req, res) {
     var clientPath = path.resolve('download');
@@ -108,6 +133,29 @@ router.post('/process_deleteclient', function (req, res) {
 
     res.redirect('Clients');
 });
+
+//Upload EmployeeData
+//Todo: req.files is undefined
+router.post('/fileUpdateload_EmployeeData', upload.single('file'), function (req, res) {
+    // res.redirect('ClientDetail');
+    var clientName = req.query.clientName;
+    var des_file = __dirname + "/" + req.files[0].originalname;
+    fs.readFile(req.files[0].path, function (err, data) {
+        fs.writeFile(des_file, data, function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                response = {
+                    message: 'File uploaded successfully',
+                    filename: req.files[0].originalname
+                };
+            }
+            console.log(response);
+            res.end(JSON.stringify(response));
+        });
+    });
+});
+
 
 //process parameter page
 router.post('/process_post', function (req, res) {
@@ -248,7 +296,8 @@ router.post('/process_post', function (req, res) {
     // Create Job folder
     var path = require('path');
     var jobName = "job_" + getDateTime();
-    desFolder = path.resolve('download/clientA/', jobName);
+    var clientName = req.query.clientName;
+    desFolder = path.resolve('download/' + clientName + '/' + jobName);
     fs.mkdirSync(desFolder, 0755);
     var desFile = desFolder + "/parameter.json";
     console.log(desFile);
