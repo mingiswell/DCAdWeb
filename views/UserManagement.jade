@@ -8,8 +8,6 @@ html
     // MAIN STYLE CSS FILE
     link#style-color(rel='stylesheet', href='css/colors/blue-color.css', media='screen')
     // DEFAULT BLUE COLOR CSS FILE
-    link(rel='stylesheet', href='css/font-awesome/font-awesome.min.css', media='screen')
-    // FONT AWESOME ICONS CSS FILE
   body
     #container
       // main container starts
@@ -29,13 +27,13 @@ html
             .container
               ul.main-menu
                 li
-                  a#current(href='index') Home
+                  a(href='index') Home
                 li
                   a(href='Clients') Clients
                 li
                   a(href='MetaData') MetaData
                 li
-                  a(href='Jobs') Jobs
+                  a#current(href='Jobs') Jobs
               // main navigation ends
               .after-nav-info
                 h4 Li, Qiao
@@ -44,43 +42,14 @@ html
         .intro-features
           // intro features panel starts
           .container
-            // project carousel starts
-            .one-fourth
-              .item-wrapp
-                .portfolio-item
-                  a.item-permalink(href='Clients')
-                    i.icon-link
-                  img(src='images/Clients.jpg', alt='')
-                .portfolio-item-title
-                  a(href='Clients') Clients
-                  p
-                    | Clients Info
-            .one-fourth
-              .item-wrapp
-                .portfolio-item
-                  a.item-permalink(href='MetaData')
-                    i.icon-link
-                  img(src='images/MetaData.jpg', alt='')
-                .portfolio-item-title
-                  a(href='MetaData') MetaData
-                  p
-                    | MetaData Upload
-            .one-fourth
-              .item-wrapp
-                .portfolio-item
-                  a.item-permalink(href='Jobs')
-                    i.icon-link
-                  img(src='images/Jobs.jpg', alt='')
-                .portfolio-item-title
-                  a(href='Jobs') Jobs
-                  p
-                    | Jobs Info
+            each client in ClientUserList
+                .blog-post.layout-2 #{client}
+                
       // intro features panel ends
       section#copyrights
         section.container
           .one-half
             p
-
               | © 2016 Mercer LLC, All Rights Reserved.
     // main wrapp starts
     // main container ends

@@ -44,14 +44,14 @@ html
             .one-half
               h4 Client Detail: #{ClientName}
             .one-half
-              a.button.color.big.round(href='Parameter?clientName='+ClientName) Create New Job
+              a.button.color.big.round(href='Parameter?ClientName='+ClientName) Create New Job
               // breadcrumb nav ends
-        form(action='/process_deleteData?fileType=EmployeeData&clientName='+ClientName, method='POST')
+        form(action='/process_deleteData?fileType=EmployeeData&ClientName='+ClientName, method='POST')
           .intro-features
             // intro features panel starts
             .container
               .blog-post.layout-2
-                a.button.color.big.round(href='NewEmployeeData?clientName='+ClientName) Add EmployeeData
+                a.button.color.big.round(href='NewEmployeeData?ClientName='+ClientName) Add EmployeeData
                 input.button.color.big.round(type='submit', name='DeleteEmployeeData', value='Delete Employee Data')
               
                 each employeeData in EmployeeDataList
@@ -62,12 +62,12 @@ html
                   
 
         // intro features panel ends
-        form(action='/process_deleteData?fileType=DBResult&clientName='+ClientName, method='POST')
+        form(action='/process_deleteData?fileType=DBResult&ClientName='+ClientName, method='POST')
           .intro-features
             // intro features panel starts
             .container
               .blog-post.layout-2
-                a.button.color.big.round(href='NewDBResult?clientName='+ClientName) Add DB Result
+                a.button.color.big.round(href='NewDBResult?ClientName='+ClientName) Add DB Result
                 input.button.color.big.round(type='submit', name='DeleteDBResult', value='Delete DB Result')
               
                 each dbResult in DBResultList

@@ -3,7 +3,17 @@ var path = require('path');
 
 module.exports = function (app) {
     app.get('/', function (req, res) {
+        console.log(req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress);
+
+        
         res.render('index', { title: 'Express' });
+    });
+
+    app.get('/test', function(req,res){
+        res.sendFile(__dirname + "/" + "test.htm");
     });
 
     /* GET home page. */
@@ -37,14 +47,7 @@ module.exports = function (app) {
         res.render('Jobs');
     });
 
-    // Get parameter page.
-    app.get('/parameter', function (req, res, next) {
-        var employeeDataPath = path.resolve('download/clientA/EmployeeData');
-        var dbResultPath = path.resolve('download/clientA/DBResult');
-        var employeeDataList = GetAllFiles(employeeDataPath);
-        var dbResultList = GetAllFiles(dbResultPath);
-        res.render('parameter', { 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
-    });
+
 
     //Add new client and its subfolders (DBResult and EmployeeData) 
     //and return to ClientDetail page
@@ -71,20 +74,20 @@ module.exports = function (app) {
 
     /* GET Client Detail page. */
     app.get('/ClientDetail', function (req, res, next) {
-        var clientName = req.query.clientName;
-        var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+        var ClientName = req.query.ClientName;
+        var DBResultPath = path.resolve('download/' + ClientName + '/DBResult');
         var DBResultList = GetAllFiles(DBResultPath);
-        var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+        var EmployeeDataPath = path.resolve('download/' + ClientName + '/EmployeeData');
         var EmployeeDataList = GetAllFiles(EmployeeDataPath);
-        res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
+        res.render('ClientDetail', { 'ClientName': ClientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
     });
 
     //In the ClientDetail
     //delete the selected EmployeeData
     app.post('/process_deleteData', function (req, res) {
-        var clientName = req.query.clientName;
+        var ClientName = req.query.ClientName;
         var fileType = req.query.fileType;
-        var dataPath = path.resolve('download/' + clientName + '/' + fileType + '/');
+        var dataPath = path.resolve('download/' + ClientName + '/' + fileType + '/');
         var fileList = GetAllFiles(dataPath); 
         fileList.forEach(function(file) {
             var chbFile = req.body['chb_' + file];
@@ -99,12 +102,12 @@ module.exports = function (app) {
             }
         }, this);
 
-        var clientName = req.query.clientName;
-        var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+        var ClientName = req.query.ClientName;
+        var DBResultPath = path.resolve('download/' + ClientName + '/DBResult');
         var DBResultList = GetAllFiles(DBResultPath);
-        var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+        var EmployeeDataPath = path.resolve('download/' + ClientName + '/EmployeeData');
         var EmployeeDataList = GetAllFiles(EmployeeDataPath);
-        res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
+        res.render('ClientDetail', { 'ClientName': ClientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
 
     });
 
@@ -120,11 +123,11 @@ module.exports = function (app) {
         var clientList = GetAllFolders(clientPath);
         var clientToBeDeletedList = [];
 
-        clientList.forEach(function (clientName) {
-            controlId = 'chb_' + clientName;
+        clientList.forEach(function (ClientName) {
+            controlId = 'chb_' + ClientName;
             var chbClientName = req.body[controlId];
             if (chbClientName == "on") {
-                desFolder = path.resolve('download/', clientName);
+                desFolder = path.resolve('download/', ClientName);
                 var stat = fs.statSync(desFolder);
                 if (stat.isDirectory()) {
                     //rmdirSync only delete a non empty directory
@@ -141,26 +144,26 @@ module.exports = function (app) {
 
     /* GET New DB Result page. */
     app.get('/NewEmployeeData', function (req, res, next) {
-        var clientName = req.query.clientName;
-        res.render('NewEmployeeData', { 'clientName': clientName });
+        var ClientName = req.query.ClientName;
+        res.render('NewEmployeeData', { 'ClientName': ClientName });
     });
 
     /* GET New DB Result page. */
     app.get('/NewDBResult', function (req, res, next) {
-        var clientName = req.query.clientName;
-        res.render('NewDBResult', { 'clientName': clientName });
+        var ClientName = req.query.ClientName;
+        res.render('NewDBResult', { 'ClientName': ClientName });
     });
 
     /* file upload in NewEmployeeData and NewDBResult*/
     app.post('/fileUpload', function (req, res) {
-        var clientName = req.query.clientName;
+        var ClientName = req.query.ClientName;
         var fileType = req.query.fileType;
         var des_file;
         if (fileType == "MetaData"){
             des_file = path.resolve('download/' + req.files[0].originalname);
         }
         else{
-            des_file = path.resolve('download/' + clientName + '/' + fileType + '/' + req.files[0].originalname);
+            des_file = path.resolve('download/' + ClientName + '/' + fileType + '/' + req.files[0].originalname);
         }
         // __dirname + "/" + req.files[0].originalname;
         console.log(des_file);
@@ -179,19 +182,29 @@ module.exports = function (app) {
                     res.redirect('MetaData');
                 }
                 else{
-                    var clientName = req.query.clientName;
-                    var DBResultPath = path.resolve('download/' + clientName + '/DBResult');
+                    var ClientName = req.query.ClientName;
+                    var DBResultPath = path.resolve('download/' + ClientName + '/DBResult');
                     var DBResultList = GetAllFiles(DBResultPath);
-                    var EmployeeDataPath = path.resolve('download/' + clientName + '/EmployeeData');
+                    var EmployeeDataPath = path.resolve('download/' + ClientName + '/EmployeeData');
                     var EmployeeDataList = GetAllFiles(EmployeeDataPath);
-                    res.render('ClientDetail', { 'ClientName': clientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
+                    res.render('ClientDetail', { 'ClientName': ClientName, 'DBResultList': DBResultList, 'EmployeeDataList': EmployeeDataList });
                 }
             });
         });
-    })
+    });
 
-    //process parameter page
-    app.post('/process_post', function (req, res) {
+    // Get parameter page.
+    app.get('/parameter', function (req, res, next) {
+        var employeeDataPath = path.resolve('download/clientA/EmployeeData');
+        var dbResultPath = path.resolve('download/clientA/DBResult');
+        var employeeDataList = GetAllFiles(employeeDataPath);
+        var dbResultList = GetAllFiles(dbResultPath);
+        var ClientName = req.query.ClientName;
+        res.render('parameter', {'ClientName': ClientName, 'employeeDataList': employeeDataList, 'dbResultList': dbResultList });
+    });
+
+    //process parameter page, clicking 'Run' button
+    app.post('/process_parameter', function (req, res) {
         // fetch the info from the web page
         response = {
             CensusDate: req.body.txtCensusDate,
@@ -329,8 +342,8 @@ module.exports = function (app) {
         // Create Job folder
         var path = require('path');
         var jobName = "job_" + getDateTime();
-        var clientName = req.query.clientName;
-        desFolder = path.resolve('download/' + clientName + '/' + jobName);
+        var ClientName = req.query.ClientName;
+        desFolder = path.resolve('download/' + ClientName + '/' + jobName);
         fs.mkdirSync(desFolder, 0755);
         var desFile = desFolder + "/parameter.json";
         console.log(desFile);
@@ -342,6 +355,38 @@ module.exports = function (app) {
             }
             res.end(JSON.stringify(response));
         });
+    });
+
+    // Get UserManagement page.
+    app.get('/UserManagement', function(req, res, next){
+        // fs.readFileSync(path.resolve('download/', 'UserClient.json'), function (err, data) {
+        //     if (err) {
+        //         throw err;
+        //     }
+        //     var userClient = JSON.parse(data);
+
+        //     // for (var i = 0; i < userClient.Users.length; i++) {
+        //     //     var one = userClient.Users[i];
+        //     //     var id = one['ID'];
+        //     //     var name = one['Name'];
+        //     //     var password = one['Password'];
+        //     //     var clients = one['Clients'];
+        //     // }
+        // });
+
+        
+        var clients = GetAllFolders(path.resolve('download'));
+        var clientUser = fs.readFileSync(path.resolve('download/', 'ClientUser.json'));
+        // clients.forEach(function(client) {
+        //     clientUser.Clients.forEach(function(clientUser) {
+        //         if(client == clientUser.ClientName){
+
+        //         }
+        //     }, this);
+        // }, this);
+
+
+        res.render('UserManagement', { 'ClientUserList': JSON.parse(clientUser).Clients, 'Clients': clients});
     });
 };
 

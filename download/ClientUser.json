@@ -1,0 +1,10 @@
+{
+    "PayIncreaseType": "Age related table",
+    "PayRelatedAssumptions": {
+        "Fixed Increase": {
+            "Pay Group 1": null,
+            "Pay Group 2": "",
+            "Pay Group 3": ""
+        }
+    }
+}

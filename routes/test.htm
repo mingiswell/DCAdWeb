@@ -1,0 +1,677 @@
+<html>
+
+<head>
+	<style type="text/css">
+		body {
+			background-color: white;
+			font-family: "Calibri", Georgia, Serif;
+			font-weight: bold;
+		}
+		
+		div.paraTitle {
+			width: 1300px;
+			background-color: #8470FF;
+			color: white;
+			text-align: center;
+			font-size: 30px
+		}
+		
+		div.splitDiv {
+			width: 1300px;
+			background-color: lightgray;
+			height: 7px;
+			padding-bottom: 0px;
+			padding-top: 0px
+		}
+		
+		select,
+		input,
+		td.spanTd {
+			width: 120px;
+		}
+		
+		input.inputFile {
+			width: 100%
+		}
+		
+		table {
+			width: 100%;
+			background-color: black;
+			color: white;
+		}
+		
+		table.sectionTable {
+			width: 1300px;
+		}
+		
+		table.tableTestCases {
+			text-align: center;
+		}
+		
+		td {
+			padding-bottom: 10px;
+			padding-top: 10px
+		}
+		
+		td.multiLineTd {
+			vertical-align: top
+		}
+		
+		td.firstTd {
+			padding-left: 30px;
+			width: 25%;
+		}
+		
+		td.subTd {
+			padding-left: 50px;
+			width: 25%;
+		}
+		
+		td.innerTd {
+			padding-bottom: 0px;
+			padding-top: 0px
+		}
+		
+		td {
+			width: 120px;
+		}
+		
+		input.inputSubmit {
+			width: 160px;
+			height: 80px
+		}
+		
+		span.subSpan {
+			padding-left: 20px
+		}
+		
+		#divTestCases,
+		#tdSubsetofParticipants1,
+		#tdSubsetofParticipants2,
+		#tdSubsetofParticipants3,
+		#lblTesttrialnumber,
+		#tdTesttrialnumber {
+			visibility: hidden
+		}
+	</style><script type="text/javascript">function load() {
+    switchPayIncreaseType();
+}
+function switchPopbulationtobeRun() {
+    switch (document.getElementById('dllPopulationtobeRun').value) {
+    case "Subset of Participants":
+    document.getElementById('tdSubsetofParticipants1').style.visibility = "visible";
+    document.getElementById('tdSubsetofParticipants2').style.visibility = "visible";
+    document.getElementById('tdSubsetofParticipants3').style.visibility = "visible";
+    document.getElementById('divTestCases').style.visibility = "hidden";
+    break;
+    case "Test Cases":
+    document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
+    document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
+    document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
+    document.getElementById('divTestCases').style.visibility = "visible";
+    break;
+    default:
+    document.getElementById('tdSubsetofParticipants1').style.visibility = "hidden";
+    document.getElementById('tdSubsetofParticipants2').style.visibility = "hidden";
+    document.getElementById('tdSubsetofParticipants3').style.visibility = "hidden";
+    document.getElementById('divTestCases').style.visibility = "hidden";
+    }
+}
+function switchTrialtobeRun() {
+    var TrialValue = document.getElementById('dllTrialtobeRun').value;
+    if (TrialValue == "Test Trial") {
+    document.getElementById('lblTesttrialnumber').style.visibility = "visible";
+    document.getElementById('tdTesttrialnumber').style.visibility = "visible";
+    } else {
+    document.getElementById('lblTesttrialnumber').style.visibility = "hidden";
+    document.getElementById('tdTesttrialnumber').style.visibility = "hidden";
+    }
+}
+function switchPayIncreaseType() {
+    switch (document.getElementById('dllPayIncreaseType').value) {
+    case "Fixed Increase":
+    document.getElementById('txtPayGroup1FixedIncrease').value = "2.0%";
+    document.getElementById('txtPayGroup2FixedIncrease').value = "2.0%";
+    document.getElementById('txtPayGroup3FixedIncrease').value = "3.0%";
+    document.getElementById('dllPayGroup1Agerelatedtable').value = "";
+    document.getElementById('dllPayGroup2Agerelatedtable').value = "";
+    document.getElementById('dllPayGroup3Agerelatedtable').value = "";
+    document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
+    document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
+    document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
+    break;
+    case "Age related table":
+    document.getElementById('txtPayGroup1FixedIncrease').value = "";
+    document.getElementById('txtPayGroup2FixedIncrease').value = "";
+    document.getElementById('txtPayGroup3FixedIncrease').value = "";
+    document.getElementById('dllPayGroup1Agerelatedtable').value = "Table 2";
+    document.getElementById('dllPayGroup2Agerelatedtable').value = "Table 1";
+    document.getElementById('dllPayGroup3Agerelatedtable').value = "Table 2";
+    document.getElementById('dllPayGroup1Servicerelatedtable').value = "";
+    document.getElementById('dllPayGroup2Servicerelatedtable').value = "";
+    document.getElementById('dllPayGroup3Servicerelatedtable').value = "";
+    break;
+    case "Service related table":
+    document.getElementById('txtPayGroup1FixedIncrease').value = "";
+    document.getElementById('txtPayGroup2FixedIncrease').value = "";
+    document.getElementById('txtPayGroup3FixedIncrease').value = "";
+    document.getElementById('dllPayGroup1Agerelatedtable').value = "";
+    document.getElementById('dllPayGroup2Agerelatedtable').value = "";
+    document.getElementById('dllPayGroup3Agerelatedtable').value = "";
+    document.getElementById('dllPayGroup1Servicerelatedtable').value = "Table 6";
+    document.getElementById('dllPayGroup2Servicerelatedtable').value = "Table 7";
+    document.getElementById('dllPayGroup3Servicerelatedtable').value = "Table 7";
+    break;
+    default:
+    }
+}
+function switchclassormix(oSelNode, oSubNode){
+    var colClass = [[''],
+                ['Conservative-35', 'Conservative-55', 'Conservative-65', 'Moderate-35'],
+                ['FI: US Aggregate FI',
+                    'FI: US Intermediate G/C FI',
+                    'FI: Non-US Govt FI Hedged ',
+                    'FI: US Short G/C FI',
+                    'EQ: US Large Cap Equity',
+                    'EQ: US Mid Cap Value (Estimate)',
+                    'EQ: Int. Equity - Devlpd Mkts Hedged',
+                    'EQ: Emerging Markets Equity Unhedged',
+                    'EQ: AC World ex-US All Cap Equity Unhedged',
+                    'FI: US Long G/C FI',
+                    'TIPS',
+                    'FI: US Cash',
+                    'EQ: S&P 500 Index',
+                    'OTHER: Private Equity - Venture Cap',
+                    'EQ: US All Cap Equity',
+                    'FI: US Intermediate G/C FI3',
+                    'EQ: EAFE Growth Index',
+                    'EQ: US Equity - Large Cap Growth',
+                    'EQ: Int. Equity - Small Cap',
+                    'EQ: US Small Cap Equity',
+                    'Custom Asset Class 1',
+                    'Custom Asset Class 2',
+                    'Custom Asset Class 3',
+                    'Custom Asset Class 4',
+                    'Custom Asset Class 5',
+                    'Custom Asset Class 6',
+                    'Custom Asset Class 7',
+                    'Custom Asset Class 8',
+                    'Custom Asset Class 9',
+                    'Custom Asset Class 10']
+                ];
+    var index = oSelNode.selectedIndex + 1;
+    for(var i=0;i<oSubNode.options.length;)
+    {
+        oSubNode.removeChild(oSubNode.options[i]);
+    }
+    
+    var arrClass = colClass[index];
+    for(i = 0; i < arrClass.length; i++){
+        var oOpNode = document.createElement("option");
+        oOpNode.innerHTML = arrClass[i];
+        oSubNode.appendChild(oOpNode);
+    }
+}
+function switchAutoescalation() {}
+function switchRebalanceattheendofeachyear() {}
+function switchUseCurrentMixforfuturecontributions() {}</script></head>
+
+<body onload="load();">
+	<div id="divParameter" class="Parameters">
+		<form id="formParameter" name="paramter" method="post" action="/process_post">
+			<div class="paraTitle">Total Retirement Simulator</div>
+			<!-- Census Date and Project Type-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Census Date</td>
+					<td><input id="txtCensusDate" type="text" name="txtCensusDate" /></td>
+					<td>Project Type</td>
+					<td><select name="dllProjectType"><option value="Stochastic">Stochastic</option><option value="Deterministic">Deterministic</option></select></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Employee Data-->
+			<table class="sectionTable">
+				<tr>
+					<td style="vertical-align:bottom" class="firstTd">Employee Data</td>
+					<td colspan="3"><select id="dllEmployeeData" name="dllEmployeeData"></select></td>
+				</tr>
+				<tr>
+					<td class="firstTd">Import DB Results?</td>
+					<td><select name="dllImportDBResults"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+					<td>
+					</td>
+					<td> </td>
+				</tr>
+				<tr>
+					<td class="firstTd">DB Results</td>
+					<td colspan="3"><select id="dllDBResult" name="dllDBResult"></select></td>
+				</tr>
+				<tr>
+					<td class="firstTd">Output File</td>
+					<td colspan="3"><input id="txtOutputFile" type="text" name="txtOutputFile" /></td>
+				</tr>
+				<tr>
+					<td class="multiLineTd firstTd">Notes:</td>
+					<td colspan="3"><textarea rows="4" cols="80" name="txtNotes"></textarea></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Population to be Run-->
+			<table class="sectionTable">
+				<tr>
+					<td class="multiLineTd firstTd">Population to be Run</td>
+					<td class="multiLineTd"><select id="dllPopulationtobeRun" name="dllPopulationtobeRun" onchange="switchPopbulationtobeRun()"><option value="All Participants">All Participants</option><option value="Subset of Participants">Subset of Participants</option><option value="Test Cases">Test Cases</option></select></td>
+					<td
+						rowspan="8" class="multiLineTd">
+						<div id="divTestCases" class="divTestCases">
+							<table name="tableTestCases" class="tableTestCases">
+								<tr>
+									<td class="innerTd">Test Cases</td>
+									<td class="innerTd">EEID</td>
+								</tr>
+								<tr>
+									<td class="innerTd">1</td>
+									<td class="innerTd"><input id="txttableTestCases1" type="text" name="txttableTestCases1" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">2</td>
+									<td class="innerTd"><input id="txttableTestCases2" type="text" name="txttableTestCases2" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">3</td>
+									<td class="innerTd"><input id="txttableTestCases3" type="text" name="txttableTestCases3" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">4</td>
+									<td class="innerTd"><input id="txttableTestCases4" type="text" name="txttableTestCases4" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">5</td>
+									<td class="innerTd"><input id="txttableTestCases5" type="text" name="txttableTestCases5" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">6</td>
+									<td class="innerTd"><input id="txttableTestCases6" type="text" name="txttableTestCases6" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">7</td>
+									<td class="innerTd"><input id="txttableTestCases7" type="text" name="txttableTestCases7" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">8</td>
+									<td class="innerTd"><input id="txttableTestCases8" type="text" name="txttableTestCases8" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">9</td>
+									<td class="innerTd"><input id="txttableTestCases9" type="text" name="txttableTestCases9" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd">10</td>
+									<td class="innerTd"><input id="txttableTestCases10" type="text" name="txttableTestCases10" /></td>
+								</tr>
+								<tr>
+									<td class="innerTd"></td>
+									<td class="innerTd"><input id="txttableTestCases11" type="text" name="txttableTestCases11" /></td>
+								</tr>
+							</table>
+						</div>
+						</td>
+						<td rowspan="8" class="multiLineTd"><br/><br/><input type="submit" value="Run" class="inputSubmit" /></td>
+				</tr>
+				<tr>
+					<td id="tdSubsetofParticipants1" class="innerTd firstTd">Subset of Participants</td>
+					<td class="innerTd"></td>
+				</tr>
+				<tr>
+					<td id="tdSubsetofParticipants2" class="innerTd subTd">No of Participants<br/> Start with Row</td>
+					<td id="tdSubsetofParticipants3" class="innerTd"><input id="txtNoofParticipants" type="text" name="txtNoofParticipants" /><br/><input id="txtStartwithRow" type="text"
+							name="txtStartwithRow" /></td>
+				</tr>
+				<tr>
+					<td class="firstTd firstTd">Trial to be Run</td>
+					<td><select id="dllTrialtobeRun" name="dllTrialtobeRun" onchange="switchTrialtobeRun()"><option value="All">All</option><option value="Test Trial">Test Trial</option></select></td>
+				</tr>
+				<tr>
+					<td id="lblTesttrialnumber" class="subTd">Test trial number</td>
+					<td id="tdTesttrialnumber"><input id="txtTesttrialnumber" type="text" name="txtTesttrialnumber" /></td>
+				</tr>
+				<tr>
+					<td class="innerTd firstTd">Start Age<br/> End Age</td>
+					<td class="innerTd"><input id="txtStartAge" type="text" name="txtStartAge" /><br/><input id="txtEndAge" type="text" name="txtEndAge" /></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Pay Related Assumptions-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Pay Related Assumptions</td>
+					<td class="spanTd"></td>
+					<td class="spanTd"></td>
+					<td class="spanTd"></td>
+					<td class="subTd"></td>
+					<td class="spanTd"></td>
+					<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td class="subTd">Pay Increase Type</td>
+					<td><select id="dllPayIncreaseType" name="dllPayIncreaseType" onchange="switchPayIncreaseType()"><option value="Fixed Increase">Fixed Increase</option><option value="Age related table" selected="">Age related table</option><option value="Service related table">Service related table</option></select></td>
+				</tr>
+				<tr>
+					<td class="subTd"><br/> Fixed Increase<br/> Age related table<br/> Service related table<br/><br/> Bonus as a % of Target</td>
+					<td>Pay Group 1<br/><input id="txtPayGroup1FixedIncrease" type="text" name="txtPayGroup1FixedIncrease" /><br/><select id="dllPayGroup1Agerelatedtable"
+							name="dllPayGroup1Agerelatedtable"><option disabled="" selected="" value=""></option><option value="Table 1">Table 1</option><option value="Table 2">Table 2</option><option value="Table 3">Table 3</option><option value="Table 4">Table 4</option><option value="Table 5">Table 5</option></select><br/>
+						<select
+							id="dllPayGroup1Servicerelatedtable" name="dllPayGroup1Servicerelatedtable">
+							<option disabled="" selected="" value=""></option>
+							<option value="Table 6">Table 6</option>
+							<option value="Table 7">Table 7</option>
+							<option value="Table 8">Table 8</option>
+							<option value="Table 9">Table 9</option>
+							<option value="Table 10">Table 10</option>
+							</select><br/><br/><input id="txtPayGroup1BonusasaPecentofTarget" type="text" name="txtPayGroup1BonusasaPecentofTarget" /></td>
+					<td>Pay Group 2<br/><input id="txtPayGroup2FixedIncrease" type="text" name="txtPayGroup2FixedIncrease" /><br/><select id="dllPayGroup2Agerelatedtable"
+							name="dllPayGroup2Agerelatedtable"><option disabled="" selected="" value=""></option><option value="Table 1">Table 1</option><option value="Table 2">Table 2</option><option value="Table 3">Table 3</option><option value="Table 4">Table 4</option><option value="Table 5">Table 5</option></select><br/>
+						<select
+							id="dllPayGroup2Servicerelatedtable" name="dllPayGroup2Servicerelatedtable">
+							<option disabled="" selected="" value=""></option>
+							<option value="Table 6">Table 6</option>
+							<option value="Table 7">Table 7</option>
+							<option value="Table 8">Table 8</option>
+							<option value="Table 9">Table 9</option>
+							<option value="Table 10">Table 10</option>
+							</select><br/><br/><input id="txtPayGroup2BonusasaPecentofTarget" type="text" name="txtPayGroup2BonusasaPecentofTarget" /></td>
+					<td>Pay Group 3<br/><input id="txtPayGroup3FixedIncrease" type="text" name="txtPayGroup3FixedIncrease" /><br/><select id="dllPayGroup3Agerelatedtable"
+							name="dllPayGroup3Agerelatedtable"><option disabled="" selected="" value=""></option><option value="Table 1">Table 1</option><option value="Table 2">Table 2</option><option value="Table 3">Table 3</option><option value="Table 4">Table 4</option><option value="Table 5">Table 5</option></select><br/>
+						<select
+							id="dllPayGroup3Servicerelatedtable" name="dllPayGroup3Servicerelatedtable">
+							<option disabled="" selected="" value=""></option>
+							<option value="Table 6">Table 6</option>
+							<option value="Table 7">Table 7</option>
+							<option value="Table 8">Table 8</option>
+							<option value="Table 9">Table 9</option>
+							<option value="Table 10">Table 10</option>
+							</select><br/><br/><input id="txtPayGroup3BonusasaPecentofTarget" type="text" name="txtPayGroup3BonusasaPecentofTarget" /></td>
+					<td
+						class="subTd"><br/> Adjusted for Inflation<br/> Baseline inflation for adj<br/> Minimum Increase<br/><br/><br/></td>
+						<td>All Pay Groups<br/><select name="dllAdjustedforInflation"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select><br/><input
+								id="txtBaselineinflationforadj" type="text" name="txtBaselineinflationforadj" /><br/><input id="txtMinimumIncrease"
+								type="text" name="txtMinimumIncrease" /><br/><br/><br/></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Assumed Tax rate-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Assumed Tax rate</td>
+					<td>Pre-Retirement<br/><input id="txtPreRetirement" type="text" name="txtPreRetirement" /></td>
+					<td class="spanTd"></td>
+					<td>Post Retirement<br/><input id="txtPostRetirement" type="text" name="txtPostRetirement" /></td>
+					<td class="subTd"></td>
+					<td class="spanTd"></td>
+					<td class="spanTd"></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Prorate Target for Short Svc?-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Prorate Target for Short Svc?</td>
+					<td class="spanTd"></td>
+					<td><select name="dllProrateTargetforShortSvc"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+					<td
+						class="spanTd"></td>
+						<td class="subTd"></td>
+						<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">No. of Years for Full Target<br/> Starting age for prorate period</td>
+					<td><input id="txtNoofYearsforFullTarget" type="text" name="txtNoofYearsforFullTarget" /><br/><input id="txtStartingageforprorateperiod"
+							type="text" name="txtStartingageforprorateperiod" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">Custom Percentile to include in output</td>
+					<td><input id="txtCustomPercentiletoincludeinoutput" type="text" name="txtCustomPercentiletoincludeinoutput" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">Stop Age for post-retirement benefits<br/> Interest rate to calculate PV</td>
+					<td><input id="txtStopAgeforpostretirementbenefits" type="text" name="txtStopAgeforpostretirementbenefits" /><br/><input
+							id="txtInterestratetocalculatePV" type="text" name="txtInterestratetocalculatePV" /></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Profit Sharing percentage-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Profit Sharing percentage</td>
+					<td class="spanTd"></td>
+					<td><input id="txtProfitSharingpercentage" type="text" name="txtProfitSharingpercentage" /></td>
+					<td class="spanTd"></td>
+					<td class="subTd"></td>
+					<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">Include Bonus in Profit Sharing pay?</td>
+					<td><select name="dllIncludeBonusinProfitSharingpay"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">Minimum service for PS eligibility</td>
+					<td><input id="txtMinimumserviceforPSeligibility" type="text" name="txtMinimumserviceforPSeligibility" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">Portion of year interest for annual contribution</td>
+					<td><input id="txtPortionofyearinterestforannualcontribution" type="text" name="txtPortionofyearinterestforannualcontribution"
+						/></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Include Bonus in 401(k) pay?-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Include Bonus in 401(k) pay?</td>
+					<td class="spanTd"></td>
+					<td><select name="dllIncludeBonusin401pay"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+					<td
+						class="spanTd"></td>
+						<td class="subTd"></td>
+						<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">401(k) Pre-tax Employee Contribution</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">Minimum deferral rate<br/> Maximum deferral rate<br/> Allow Catch-up contributions</td>
+					<td><input id="txtMinimumdeferralrate" type="text" name="txtMinimumdeferralrate" /><br/><input id="txtMaximumdeferralrate"
+							type="text" name="txtMaximumdeferralrate" /><br/><select name="dllAllowCatchupcontributions"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">Auto-escalation?<br/><span class="subSpan">Annual Increase<br/><span class="subSpan">Maximum Auto-escalation</span></span>
+					</td>
+					<td><select id="dllAutoescalation" name="dllAutoescalation" onchange="switchAutoescalation()"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select><br/><input
+							id="txtAnnualIncrease" type="text" name="txtAnnualIncrease" /><br/><input id="txtMaximumAutoescalation" type="text"
+							name="txtMaximumAutoescalation" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">401(k) Employer Match Contribution</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">Rate table for first x%<br/><span class="subSpan">Percentage of pay for which this table applies<br/> Rate table for next y%<br/><span class="subSpan">Percentage of additional pay for which this table applies</span></span>
+					</td>
+					<td><select id="dllRatetableforfirstx" name="dllRatetableforfirstx"><option value="Match Table 1">Match Table 1</option><option value="Match Table 2">Match Table 2</option><option value="Match Table 3">Match Table 3</option><option value="Match Table 4">Match Table 4</option></select><br/><input
+							id="txtPercentageofpay" type="text" name="txtPercentageofpay" /><br/><select id="dllRatetablefornexty" name="dllRatetablefornexty"><option value="Match Table 1">Match Table 1</option><option value="Match Table 2">Match Table 2</option><option value="Match Table 3">Match Table 3</option><option value="Match Table 4">Match Table 4</option></select><br/><input
+							id="txtPercentageofadditionalpay" type="text" name="txtPercentageofadditionalpay" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd"><span class="subSpan">Include After-tax contributions for match?</span></td>
+					<td><select id="dllIncludeAftertaxcontributions" name="dllIncludeAftertaxcontributions"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd"><span class="subSpan">Max overall match as a percentage of pay<br/><span class="subSpan">Maximum dollar match<br/><span class="subSpan">Adjust maximum dollar match for inflation?</span></span>
+						</span>
+					</td>
+					<td><input id="txtMaxoverallmatchasapercentageofpay" type="text" name="txtMaxoverallmatchasapercentageofpay" /><br/><input
+							id="txtMaximumdollarmatch" type="text" name="txtMaximumdollarmatch" /><br/><select id="dllAdjustmaximumdollarmatchforinflation"
+							name="dllAdjustmaximumdollarmatchforinflation"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Adjust for medical expenses?-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Adjust for medical expenses?</td>
+					<td class="spanTd"></td>
+					<td><select name="dllAdjustformedicalexpenses"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+					<td
+						class="spanTd"></td>
+						<td class="subTd"></td>
+						<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="firstTd">Pre-retirement medical expenses<br/> Post-retirement medical expenses<br/><span class="subSpan">Pre-65<br/><span class="subSpan">Post-65</span></span>
+					</td>
+					<td><input id="txtPreretirementmedicalexpenses" type="text" name="txtPreretirementmedicalexpenses" /><br/><br/><input id="txtPostretirementmedicalexpensesPre65"
+							type="text" name="txtPostretirementmedicalexpensesPre65" /><br/><input id="txtPostretirementmedicalexpensesPost65"
+							type="text" name="txtPostretirementmedicalexpensesPost65" /></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Social Security PIA-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Social Security PIA<br/><span class="subSpan">Social Security COLA Assumption<br/><span class="subSpan">Wage Base Increase Assumption</span></span>
+					</td>
+					<td class="spanTd"></td>
+					<td><br/><input id="txtSocialSecurityCOLAAssumption" type="text" name="txtSocialSecurityCOLAAssumption" /><br/><input id="txtWageBaseIncreaseAssumption"
+							type="text" name="txtWageBaseIncreaseAssumption" /></td>
+					<td class="spanTd"></td>
+					<td class="subTd"></td>
+					<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">Social Security PIA Commencement Age</td>
+					<td><input id="txtSocialSecurityPIACommencementAge" type="text" name="txtSocialSecurityPIACommencementAge" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subTd">Historical Pay Scale (for pay before history begins)</td>
+					<td><input id="txtHistoricalPayScale" type="text" name="txtHistoricalPayScale" /></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+			<!-- Fund (from Individual Data tab)-->
+			<table class="sectionTable">
+				<tr>
+					<td class="firstTd">Fund (from Individual Data tab)<br/> AGGRESSIVE FUNDTPQA<br/> AGGRESSIVE GROWTH EQTCAG<br/> BOND INDEXTPQB<br/> BROKERAGELINKBLNK<br/>						CAPITAL PRESERVATIONGCTI<br/> CONSERVATIVE FUNDTPQC<br/> DFA EMRG MKT CORE EQOEFQ<br/> DIVERSIFIED BONDTPQD<br/> GROWTH
+						FUNDTPQE<br/> INTERNATIONAL INDEXTPQG</td>
+					<td>Single class or mix?<br/><select id="dllAGGRESSIVEFUNDTPQASingleclassormix" name="dllAGGRESSIVEFUNDTPQASingleclassormix"
+							onchange="switchclassormix(dllAGGRESSIVEFUNDTPQASingleclassormix,dllAGGRESSIVEFUNDTPQASingleclass)"><option value="0">-</option><option value="1">1</option></select><br/>
+						<select
+							id="dllAGGRESSIVEGROWTHEQTCAGSingleclassormix" name="dllAGGRESSIVEGROWTHEQTCAGSingleclassormix" onchange="switchclassormix(dllAGGRESSIVEGROWTHEQTCAGSingleclassormix,dllAGGRESSIVEGROWTHEQTCAGSingleclass)">
+							<option value="0">-</option>
+							<option value="1">1</option>
+							</select><br/><select id="dllBONDINDEXTPQBSingleclassormix" name="dllBONDINDEXTPQBSingleclassormix" onchange="switchclassormix(dllBONDINDEXTPQBSingleclassormix,dllBONDINDEXTPQBSingleclass)"><option value="0">-</option><option value="1">1</option></select><br/>
+							<select
+								id="dllBROKERAGELINKBLNKSingleclassormix" name="dllBROKERAGELINKBLNKSingleclassormix" onchange="switchclassormix(dllBROKERAGELINKBLNKSingleclassormix,dllBROKERAGELINKBLNKSingleclass)">
+								<option value="0">-</option>
+								<option value="1">1</option>
+								</select><br/><select id="dllCAPITALPRESERVATIONGCTISingleclassormix" name="dllCAPITALPRESERVATIONGCTISingleclassormix" onchange="switchclassormix(dllCAPITALPRESERVATIONGCTISingleclassormix,dllCAPITALPRESERVATIONGCTISingleclass)"><option value="0">-</option><option value="1">1</option></select><br/>
+								<select
+									id="dllCONSERVATIVEFUNDTPQCSingleclassormix" name="dllCONSERVATIVEFUNDTPQCSingleclassormix" onchange="switchclassormix(dllCONSERVATIVEFUNDTPQCSingleclassormix,dllCONSERVATIVEFUNDTPQCSingleclass)">
+									<option value="0">-</option>
+									<option value="1">1</option>
+									</select><br/><select id="dllDFAEMRGMKTCOREEQOEFQSingleclassormix" name="dllDFAEMRGMKTCOREEQOEFQSingleclassormix" onchange="switchclassormix(dllDFAEMRGMKTCOREEQOEFQSingleclassormix,dllDFAEMRGMKTCOREEQOEFQSingleclass)"><option value="0">-</option><option value="1">1</option></select><br/>
+									<select
+										id="dllDIVERSIFIEDBONDTPQDSingleclassormix" name="dllDIVERSIFIEDBONDTPQDSingleclassormix" onchange="switchclassormix(dllDIVERSIFIEDBONDTPQDSingleclassormix,dllDIVERSIFIEDBONDTPQDSingleclass)">
+										<option value="0">-</option>
+										<option value="1">1</option>
+										</select><br/><select id="dllGROWTHFUNDTPQESingleclassormix" name="dllGROWTHFUNDTPQESingleclassormix" onchange="switchclassormix(dllGROWTHFUNDTPQESingleclassormix,dllGROWTHFUNDTPQESingleclass)"><option value="0">-</option><option value="1">1</option></select><br/>
+										<select
+											id="dllINTERNATIONALINDEXTPQGSingleclassormix" name="dllINTERNATIONALINDEXTPQGSingleclassormix" onchange="switchclassormix(dllINTERNATIONALINDEXTPQGSingleclassormix,dllINTERNATIONALINDEXTPQGSingleclass)">
+											<option value="0">-</option>
+											<option value="1">1</option>
+											</select>
+					</td>
+					<td>Class<br/><select id="dllAGGRESSIVEFUNDTPQASingleclass" name="dllAGGRESSIVEFUNDTPQASingleclass"><option value="Conservative-35">Conservative-35</option><option value="Conservative-55">Conservative-55</option><option value="Conservative-65">Conservative-65</option><option value="Moderate-35">Moderate-35</option></select><br/>
+						<select
+							id="dllAGGRESSIVEGROWTHEQTCAGSingleclass" name="dllAGGRESSIVEGROWTHEQTCAGSingleclass">
+							<option value="Conservative-35">Conservative-35</option>
+							<option value="Conservative-55">Conservative-55</option>
+							<option value="Conservative-65">Conservative-65</option>
+							<option value="Moderate-35">Moderate-35</option>
+							</select><br/><select id="dllBONDINDEXTPQBSingleclass" name="dllBONDINDEXTPQBSingleclass"><option value="Conservative-35">Conservative-35</option><option value="Conservative-55">Conservative-55</option><option value="Conservative-65">Conservative-65</option><option value="Moderate-35">Moderate-35</option></select><br/>
+							<select
+								id="dllBROKERAGELINKBLNKSingleclass" name="dllBROKERAGELINKBLNKSingleclass">
+								<option value="Conservative-35">Conservative-35</option>
+								<option value="Conservative-55">Conservative-55</option>
+								<option value="Conservative-65">Conservative-65</option>
+								<option value="Moderate-35">Moderate-35</option>
+								</select><br/><select id="dllCAPITALPRESERVATIONGCTISingleclass" name="dllCAPITALPRESERVATIONGCTISingleclass"><option value="Conservative-35">Conservative-35</option><option value="Conservative-55">Conservative-55</option><option value="Conservative-65">Conservative-65</option><option value="Moderate-35">Moderate-35</option></select><br/>
+								<select
+									id="dllCONSERVATIVEFUNDTPQCSingleclass" name="dllCONSERVATIVEFUNDTPQCSingleclass">
+									<option value="Conservative-35">Conservative-35</option>
+									<option value="Conservative-55">Conservative-55</option>
+									<option value="Conservative-65">Conservative-65</option>
+									<option value="Moderate-35">Moderate-35</option>
+									</select><br/><select id="dllDFAEMRGMKTCOREEQOEFQSingleclass" name="dllDFAEMRGMKTCOREEQOEFQSingleclass"><option value="Conservative-35">Conservative-35</option><option value="Conservative-55">Conservative-55</option><option value="Conservative-65">Conservative-65</option><option value="Moderate-35">Moderate-35</option></select><br/>
+									<select
+										id="dllDIVERSIFIEDBONDTPQDSingleclass" name="dllDIVERSIFIEDBONDTPQDSingleclass">
+										<option value="Conservative-35">Conservative-35</option>
+										<option value="Conservative-55">Conservative-55</option>
+										<option value="Conservative-65">Conservative-65</option>
+										<option value="Moderate-35">Moderate-35</option>
+										</select><br/><select id="dllGROWTHFUNDTPQESingleclass" name="dllGROWTHFUNDTPQESingleclass"><option value="Conservative-35">Conservative-35</option><option value="Conservative-55">Conservative-55</option><option value="Conservative-65">Conservative-65</option><option value="Moderate-35">Moderate-35</option></select><br/>
+										<select
+											id="dllINTERNATIONALINDEXTPQGSingleclass" name="dllINTERNATIONALINDEXTPQGSingleclass">
+											<option value="Conservative-35">Conservative-35</option>
+											<option value="Conservative-55">Conservative-55</option>
+											<option value="Conservative-65">Conservative-65</option>
+											<option value="Moderate-35">Moderate-35</option>
+											</select>
+					</td>
+					<td><br/><input id="txtAGGRESSIVEFUNDTPQASingleclassormix" type="text" name="txtAGGRESSIVEFUNDTPQASingleclassormix" /><br/><input
+							id="txtAGGRESSIVEGROWTHEQTCAGSingleclassormix" type="text" name="txtAGGRESSIVEGROWTHEQTCAGSingleclassormix" /><br/><input
+							id="txtBONDINDEXTPQBSingleclassormix" type="text" name="txtBONDINDEXTPQBSingleclassormix" /><br/><input id="txtBROKERAGELINKBLNKSingleclassormix"
+							type="text" name="txtBROKERAGELINKBLNKSingleclassormix" /><br/><input id="txtCAPITALPRESERVATIONGCTISingleclassormix"
+							type="text" name="txtCAPITALPRESERVATIONGCTISingleclassormix" /><br/><input id="txtCONSERVATIVEFUNDTPQCSingleclassormix"
+							type="text" name="txtCONSERVATIVEFUNDTPQCSingleclassormix" /><br/><input id="txtDFAEMRGMKTCOREEQOEFQSingleclassormix"
+							type="text" name="txtDFAEMRGMKTCOREEQOEFQSingleclassormix" /><br/><input id="txtDIVERSIFIEDBONDTPQDSingleclassormix"
+							type="text" name="txtDIVERSIFIEDBONDTPQDSingleclassormix" /><br/><input id="txtGROWTHFUNDTPQESingleclassormix" type="text"
+							name="txtGROWTHFUNDTPQESingleclassormix" /><br/><input id="txtINTERNATIONALINDEXTPQGSingleclassormix" type="text" name="txtINTERNATIONALINDEXTPQGSingleclassormix"
+						/></td>
+					<td class="subTd"></td>
+					<td class="spanTd"></td>
+					<td class="spanTd"></td>
+				</tr>
+				<tr>
+					<td colspan="3" class="firstTd">Rebalance at the end of each year?<br/> Mixed Fund Class allocations are Fixed or Age-Based<br/> Use Current Mix (from
+						Individual Data) for future contributions?</td>
+					<td><select id="dllRebalanceattheendofeachyear" name="dllRebalanceattheendofeachyear" onchange="switchRebalanceattheendofeachyear()"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select><br/>
+						<select
+							id="dllMixedFundClassallocations" name="dllMixedFundClassallocations">
+							<option value="Fixed">Fixed</option>
+							<option value="Age-Based">Age-Based</option>
+							</select><br/><select id="dllUseCurrentMixforfuturecontributions" name="dllUseCurrentMixforfuturecontributions" onchange="switchUseCurrentMixforfuturecontributions()"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select></td>
+				</tr>
+				<tr>
+					<td colspan="3" class="firstTd innerTd">Fund Allocations for Future Contributions and Rebalancing</td>
+				</tr>
+				<tr>
+					<td class="firstTd innerTd">AGGRESSIVE FUNDTPQA<br/> AGGRESSIVE GROWTH EQTCAG<br/> BOND INDEXTPQB<br/> BROKERAGELINKBLNK<br/> CAPITAL PRESERVATIONGCTI<br/>						CONSERVATIVE FUNDTPQC<br/> DFA EMRG MKT CORE EQOEFQ<br/> DIVERSIFIED BONDTPQD<br/> GROWTH FUNDTPQE<br/> INTERNATIONAL
+						INDEXTPQG<br/></td>
+					<td class="innerTd"><input id="txtAGGRESSIVEFUNDTPQA" type="text" name="txtAGGRESSIVEFUNDTPQA" /><br/><input id="txtAGGRESSIVEGROWTHEQTCAG"
+							type="text" name="txtAGGRESSIVEGROWTHEQTCAG" /><br/><input id="txtBONDINDEXTPQB" type="text" name="txtBONDINDEXTPQB"
+						/><br/><input id="txtBROKERAGELINKBLNK" type="text" name="txtBROKERAGELINKBLNK" /><br/><input id="txtCAPITALPRESERVATIONGCTI"
+							type="text" name="txtCAPITALPRESERVATIONGCTI" /><br/><input id="txtCONSERVATIVEFUNDTPQC" type="text" name="txtCONSERVATIVEFUNDTPQC"
+						/><br/><input id="txtDFAEMRGMKTCOREEQOEFQ" type="text" name="txtDFAEMRGMKTCOREEQOEFQ" /><br/><input id="txtDIVERSIFIEDBONDTPQD"
+							type="text" name="txtDIVERSIFIEDBONDTPQD" /><br/><input id="txtGROWTHFUNDTPQE" type="text" name="txtGROWTHFUNDTPQE"
+						/><br/><input id="txtINTERNATIONALINDEXTPQG" type="text" name="txtINTERNATIONALINDEXTPQG" /><br/></td>
+				</tr>
+				<tr>
+					<td><br/></td>
+				</tr>
+			</table>
+			<div class="splitDiv"></div>
+		</form>
+	</div>
+</body>
+
+</html>
