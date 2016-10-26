@@ -44,10 +44,18 @@ module.exports = function (app) {
 
     /* GET New Jobs page. */
     app.get('/Jobs', function (req, res, next) {
-        res.render('Jobs');
+        var clients = GetAllFolders(path.resolve('download'));
+        var clientJobs = [];
+        clients.forEach(function(client) {
+            var jobs = GetAllFolders(path.resolve('download', client));
+            jobs.forEach(function(job) {
+                if(job != "DBResult" && job != "EmployeeData"){
+                    clientJobs.push(client + ' - ' + job);
+                }
+            }, this);
+        }, this);
+        res.render('Jobs', {'ClientJobs': clientJobs});
     });
-
-
 
     //Add new client and its subfolders (DBResult and EmployeeData) 
     //and return to ClientDetail page

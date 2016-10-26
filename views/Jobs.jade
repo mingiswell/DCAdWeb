@@ -42,11 +42,12 @@ html
         .intro-features
           // intro features panel starts
           .container
-            .blog-post.layout-2 Client1 - Job1
-            .blog-post.layout-2 Client1 - Job2
-            .blog-post.layout-2 Client1 - Job3
-            .blog-post.layout-2 Client2 - Job1
-            .blog-post.layout-2 Client2 - Job2
+
+            h4 Client - Job
+
+            each clientJob in ClientJobs
+              .blog-post.layout-2 #{clientJob}
+      
       // intro features panel ends
       section#copyrights
         section.container
